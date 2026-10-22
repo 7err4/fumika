@@ -1,0 +1,3 @@
+{
+  "1": {"class_type": "MossDoujinFreezeLook", "inputs": {"page": "{{page}}", "items": "{{items}}", "threshold": 0.35}}
+}

@@ -1,0 +1,7 @@
+{
+  "1": {"class_type": "MossEasyEpochTest", "inputs": {
+    "lora_name": "{{name}}", "test_prompts": "{{test_prompts}}",
+    "base_model": "auto (find it by name)", "text_encoder": "auto (find it by name)", "vae": "auto (find it by name)",
+    "turbo_lora": "auto (find it by name)"}},
+  "2": {"class_type": "SaveImage", "inputs": {"images": ["1", 0], "filename_prefix": "fumika_training/{{name}}_epochs"}}
+}

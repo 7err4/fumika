@@ -1,0 +1,106 @@
+{
+  "id": "moss-lora-trainer",
+  "name": "MOSS LoRA Trainer",
+  "version": "1.0.0",
+  "author": "7err4",
+  "description": "Train character, outfit and style LoRAs for MOSS-Image (kohya sd-scripts in its own environment) and pick the best epoch from a grid.",
+  "kinds": [
+    "train"
+  ],
+  "family": "MOSS-Image",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "trainer"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-MOSS-LoRA-Trainer"
+  ],
+  "models": [
+    {
+      "id": "moss_base_bf16",
+      "name": "MOSS-Image Base (bf16, best quality)",
+      "file": "moss_image_base_bf16.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with 24 GB VRAM or more",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "moss_base_int8",
+      "name": "MOSS-Image Base (int8, smaller)",
+      "file": "moss_image_base_int8_convrot.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_int8_convrot.safetensors",
+      "size": 5413698958,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with less than 24 GB VRAM",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "qwen_te",
+      "name": "Qwen3.5-9B text encoder (int8)",
+      "file": "qwen3.5_9b_int8_convrot.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_int8_convrot.safetensors",
+      "size": 9748121532,
+      "kind": "required",
+      "note": "reads your sentences and the page layout",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "vae",
+      "name": "FLUX.2 VAE",
+      "file": "flux2-vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/vae/flux2-vae.safetensors",
+      "size": 336211292,
+      "kind": "required",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "turbo",
+      "name": "8-step turbo LoRA (6x faster)",
+      "file": "kromoss_8steps_dmd_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/lodestones/Kromoss/resolve/main/8-steps-dmd-lora.safetensors",
+      "size": 1189176800,
+      "kind": "recommended",
+      "note": "without it every page uses the slow 50-step mode",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/lodestones/Kromoss"
+    }
+  ],
+  "workflows": {
+    "train": {
+      "file": "workflows/train.json",
+      "defaults": {
+        "dataset": "",
+        "name": "my_character",
+        "start": false,
+        "epochs": 0,
+        "rank": 32,
+        "learning_rate": 0.0001,
+        "resolution": 1024
+      }
+    },
+    "epochs": {
+      "file": "workflows/epochs.json",
+      "defaults": {
+        "name": "my_character",
+        "test_prompts": ""
+      }
+    }
+  },
+  "requires": [
+    "family-moss"
+  ]
+}

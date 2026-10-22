@@ -1,0 +1,84 @@
+{
+  "id": "anima-lora-trainer",
+  "name": "Anima LoRA Trainer",
+  "version": "1.1.0",
+  "author": "7err4",
+  "description": "Train LoRA / LoKr / LoHa for Anima with kohya sd-scripts: a 5-question wizard, VRAM estimate, dataset check, GPUs from 6 GB.",
+  "kinds": [
+    "train"
+  ],
+  "family": "Anima",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "trainer"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-Anima-LoRA-Training"
+  ],
+  "models": [
+    {
+      "id": "anima_base_v10",
+      "name": "Anima Base v1.0",
+      "file": "anima-base-v1.0.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/diffusion_models/anima-base-v1.0.safetensors",
+      "size": 4182218328,
+      "kind": "required",
+      "note": "the model LoRAs are trained on",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_qwen3_te",
+      "name": "Qwen3 0.6B text encoder",
+      "file": "qwen_3_06b_base.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "size": 1192135096,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_vae",
+      "name": "Qwen-Image VAE",
+      "file": "qwen_image_vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+      "size": 253806246,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    }
+  ],
+  "workflows": {
+    "train": {
+      "file": "workflows/train.json",
+      "defaults": {
+        "dataset": "",
+        "output_dir": "",
+        "name": "my_anima_lora",
+        "start": false,
+        "dit_model": "anima-base-v1.0.safetensors",
+        "text_encoder": "qwen_3_06b_base.safetensors",
+        "vae": "qwen_image_vae.safetensors",
+        "subject": "character / person",
+        "dataset_size": "small (10-30 images)",
+        "resolution": "1024x1024 (recommended)",
+        "gpu_vram": "12 GB",
+        "gpu_vram_gb": 12.0,
+        "quality": "balanced (recommended)",
+        "sample_prompt": "",
+        "sample_every": 0
+      }
+    }
+  },
+  "requires_one": [
+    "family-anima",
+    "family-anima38"
+  ]
+}

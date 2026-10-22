@@ -1,0 +1,4 @@
+{
+  "1": {"class_type": "SdxlEasyEpochTest", "inputs": {"lora_name": "{{name}}", "test_prompts": "{{test_prompts}}", "checkpoint": "{{checkpoint ?? \"auto (Illustrious first)\"}}"}},
+  "2": {"class_type": "SaveImage", "inputs": {"images": ["1", 0], "filename_prefix": "fumika_training/{{name}}_epochs"}}
+}

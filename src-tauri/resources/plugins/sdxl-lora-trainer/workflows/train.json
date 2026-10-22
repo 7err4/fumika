@@ -1,0 +1,26 @@
+{
+ "1": {
+  "class_type": "SdxlEasyTrain",
+  "inputs": {
+   "dataset_folder": "{{dataset}}",
+   "lora_name": "{{name}}",
+   "start": "{{start}}",
+   "checkpoint": "{{checkpoint ?? \"auto (Illustrious first)\"}}",
+   "trigger": "{{trigger ?? \"\"}}",
+   "epochs": "{{epochs}}",
+   "rank": "{{rank}}",
+   "learning_rate": "{{learning_rate}}",
+   "resolution": "{{resolution}}",
+   "train_text_encoder": "{{train_te ?? false}}",
+   "v_prediction": "{{v_pred ?? false}}",
+   "batch": "{{batch ?? 1}}",
+   "save_every": "{{save_every ?? 0}}",
+   "seed": "{{seed ?? 42}}",
+   "kind": "{{kind ?? \"LoRA\"}}",
+   "network": "{{network ?? \"LoRA\"}}",
+   "template": "{{template ?? \"object\"}}",
+   "init_word": "{{init_word ?? \"\"}}",
+   "vectors": "{{vectors ?? 4}}"
+  }
+ }
+}

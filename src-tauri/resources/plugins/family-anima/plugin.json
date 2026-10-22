@@ -1,0 +1,154 @@
+{
+  "id": "family-anima",
+  "name": "Anima (1.0 · 2.9B · 3.8B v1)",
+  "version": "1.1.0",
+  "author": "7err4",
+  "description": "Anima models (CircleStone Labs) and their layer-expanded versions: Anima 2.9B (Gazingstars123, 40 blocks) and Anima 3.8B v1 (lylogummy, 52 blocks) - base models, Qwen3 text encoder and VAE, for the Image Studio and the Anima trainers. Anima 3.8B v1.1 with the Qwen3.5 text encoder is its own plugin.",
+  "kinds": [
+    "family"
+  ],
+  "family": "Anima",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [],
+  "nodes": [],
+  "models": [
+    {
+      "id": "anima_base_v10",
+      "name": "Anima Base v1.0",
+      "file": "anima-base-v1.0.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/diffusion_models/anima-base-v1.0.safetensors",
+      "size": 4182218328,
+      "kind": "required",
+      "note": "the model LoRAs are trained on",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_qwen3_te",
+      "name": "Qwen3 0.6B text encoder",
+      "file": "qwen_3_06b_base.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "size": 1192135096,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_vae",
+      "name": "Qwen-Image VAE",
+      "file": "qwen_image_vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+      "size": 253806246,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_29_bf16",
+      "name": "Anima 2.9B (preview v1)",
+      "file": "Anima-2.9B-preview-v1.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Gazingstars123/Anima-2.9B/resolve/main/Anima-2.9B-preview-v1.safetensors",
+      "size": 5843204206,
+      "kind": "optional",
+      "group": "",
+      "note": "layer-expanded Anima (40 blocks, Gazingstars123); Anima 1.0 LoRAs need converting",
+      "license": "CircleStone Labs Non-Commercial License v1.2 (derivative of Anima)",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_38_expanded",
+      "name": "Anima 3.8B v1 (lylogummy)",
+      "file": "Anima-3.8B.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/lylogummy/Anima-3.8B/resolve/main/difussion_models/Anima-3.8B.safetensors",
+      "size": 7504189974,
+      "kind": "optional",
+      "note": "52 blocks, the first release of lylogummy's Anima 3.8B (also on Civitai as 'Anima-Expanded 3.8B'), used without the Qwen3.5 adapter: the normal Anima text encoder and LoRAs. Version 1.1 with the Qwen3.5 4B text encoder is the plugin 'Anima 3.8B v1.1'.",
+      "license": "CircleStone Labs Non-Commercial License v1.2 (derivative of Anima)",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    }
+  ],
+  "family_def": {
+    "id": "anima",
+    "name": "Anima",
+    "loader": "split",
+    "te": "qwen_3_06b_base.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "clip": "stable_diffusion",
+    "latent": "EmptyLatentImage",
+    "bases": [
+      "anima_base_v10",
+      "anima_29_bf16",
+      "anima_38_expanded"
+    ],
+    "ckptKind": "diffusion_models",
+    "recipe": {
+      "steps": 30,
+      "cfg": 4.5,
+      "sampler": "er_sde",
+      "scheduler": "simple",
+      "slg": ""
+    },
+    "turbo": false,
+    "sft": false,
+    "slg": false,
+    "clipSkip": 0,
+    "clipLoras": false,
+    "match": "anima",
+    "detect": ["blocks.0.adaln_modulation_cross_attn.", "llm_adapter."],
+    "inpaintSide": 1024,
+    "sizes": [
+      [
+        "square",
+        1024,
+        1024
+      ],
+      [
+        "portrait",
+        832,
+        1216
+      ],
+      [
+        "landscape",
+        1216,
+        832
+      ],
+      [
+        "page",
+        896,
+        1344
+      ],
+      [
+        "wide",
+        1344,
+        768
+      ]
+    ],
+    "presets": [
+      {
+        "id": "anima-quality",
+        "name": "Anima: quality tags",
+        "positive": "masterpiece, best quality, score_7, newest",
+        "negative": "worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts"
+      },
+      {
+        "id": "anima-clean",
+        "name": "Anima: clean picture (no text)",
+        "positive": "masterpiece, best quality",
+        "negative": "worst quality, low quality, blurry, jpeg artifacts, artist name, signature, watermark, username, text"
+      }
+    ],
+    "order": 3
+  },
+  "workflows": {}
+}

@@ -1,0 +1,6 @@
+{
+  "1": {"class_type": "MossEasyTrain", "inputs": {
+    "dataset_folder": "{{dataset}}", "lora_name": "{{name}}", "start": "{{start}}",
+    "base_model": "auto (find it by name)", "text_encoder": "auto (find it by name)", "vae": "auto (find it by name)",
+    "epochs": "{{epochs}}", "rank": "{{rank}}", "learning_rate": "{{learning_rate}}", "resolution": "{{resolution}}"}}
+}

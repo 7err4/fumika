@@ -1,0 +1,79 @@
+{
+ "last_node_id": 90,
+ "last_link_id": 0,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MossEasyTrain",
+   "pos": [
+    60,
+    40
+   ],
+   "size": [
+    560,
+    380
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "report",
+     "type": "STRING",
+     "links": []
+    },
+    {
+     "name": "log_path",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossEasyTrain"
+   },
+   "widgets_values": [
+    "C:/path/to/my_dataset",
+    "my_character",
+    false,
+    "auto (find it by name)",
+    "auto (find it by name)",
+    "auto (find it by name)",
+    0,
+    32,
+    0.0001,
+    1024
+   ]
+  },
+  {
+   "id": 90,
+   "type": "Note",
+   "pos": [
+    60,
+    -380
+   ],
+   "size": [
+    980,
+    360
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [],
+   "properties": {
+    "text": ""
+   },
+   "widgets_values": [
+    "TRAIN A LORA\n\n1. Make a folder, inside it a folder named  4_mychar  with your images (20-100).\n   Next to every image a .txt file with the same name and a sentence describing the image, always starting the same way:\n   \"Safe image. ohwx, an adult woman with long black hair, red eyes, white tank top. She stands in a park.\"\n2. dataset_folder = your folder,  lora_name = any name.  Press Run.\n3. Report says READY -> switch start on, press Run. A black window opens and trains (~1 h).\n   (First time it installs the trainer first - then press Run once more.)\n4. Press Run any time to see the progress. When it says done, open \"Test my LoRA\"."
+   ],
+   "color": "#432",
+   "bgcolor": "#653"
+  }
+ ],
+ "links": [],
+ "groups": [],
+ "config": {},
+ "extra": {},
+ "version": 0.4
+}

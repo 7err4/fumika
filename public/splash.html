@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fumika</title>
+<link rel="icon" href="/favicon.png" />
+<style>
+  /* splash: Fumika inking in from her pencil sketch - same tokens as the app (app.css) */
+  @font-face { font-family: "Libre Franklin"; font-weight: 400; src: url(/fonts/libre-franklin-latin-400-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Libre Franklin"; font-weight: 600; src: url(/fonts/libre-franklin-latin-600-normal.woff2) format("woff2"); }
+  @font-face { font-family: "Libre Franklin"; font-weight: 700; src: url(/fonts/libre-franklin-latin-700-normal.woff2) format("woff2"); }
+  :root { --board: #f6f7f8; --sheet: #fff; --ink: #151515; --ink-3: #5c6066; --nr: #6fb3e8; --nr-text: #1f6aa8; --nr-tint: #c9dceb; color-scheme: light; }
+  :root[data-theme="dark"] { --board: #121416; --sheet: #1b1e21; --ink: #ecedee; --ink-3: #969ca4; --nr: #4f8fc4; --nr-text: #8ec3ee; --nr-tint: #25405a; color-scheme: dark; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --board: #121416; --sheet: #1b1e21; --ink: #ecedee; --ink-3: #969ca4; --nr: #4f8fc4; --nr-text: #8ec3ee; --nr-tint: #25405a; color-scheme: dark; } }
+  /* "Terra" colour scheme, same values as app.css */
+  @media (prefers-color-scheme: light) { :root[data-palette="terra"]:not([data-theme="dark"]) { --board: #f6f5f7; --ink: #17151a; --ink-3: #5f5b66; --nr: #e0505f; --nr-text: #b0202f; --nr-tint: #f6cdd6; } }
+  :root[data-palette="terra"][data-theme="light"] { --board: #f6f5f7; --ink: #17151a; --ink-3: #5f5b66; --nr: #e0505f; --nr-text: #b0202f; --nr-tint: #f6cdd6; }
+  @media (prefers-color-scheme: dark) { :root[data-palette="terra"]:not([data-theme="light"]) { --board: #121116; --sheet: #1b1a21; --ink: #eeedf1; --ink-3: #9d99a7; --nr: #c8384a; --nr-text: #ff8593; --nr-tint: #4c2132; } }
+  :root[data-palette="terra"][data-theme="dark"] { --board: #121116; --sheet: #1b1a21; --ink: #eeedf1; --ink-3: #9d99a7; --nr: #c8384a; --nr-text: #ff8593; --nr-tint: #4c2132; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--board); color: var(--ink); font: 14px/1.45 "Libre Franklin", system-ui, sans-serif; display: grid;
+    grid-template-columns: 168px 1fr; align-items: center; gap: 32px; padding: 0 40px 0 34px; user-select: none; cursor: default;
+    border: 1px solid var(--nr-tint); }
+  /* Fumika on a manuscript sheet: her pencil sketch inks in diagonally (sketch -> ink), trim marks like the app's page tiles */
+  .page { position: relative; width: 168px; aspect-ratio: 2 / 3; }
+  .page::before, .page::after { content: ""; position: absolute; width: 14px; height: 14px; border: 0 solid var(--nr); }
+  .page::before { top: -9px; left: -9px; border-width: 1px 0 0 1px; }
+  .page::after { bottom: -9px; right: -9px; border-width: 0 1px 1px 0; }
+  .sheet { position: absolute; inset: 0; background: #fff; border: 1px solid var(--nr); overflow: hidden; animation: trim .4s 1.9s forwards; }
+  .sheet img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+  .ink { -webkit-mask-image: linear-gradient(135deg, #000 42%, transparent 58%); mask-image: linear-gradient(135deg, #000 42%, transparent 58%);
+    -webkit-mask-size: 260% 260%; mask-size: 260% 260%; -webkit-mask-position: 100% 100%; mask-position: 100% 100%;
+    animation: inkin 1.6s .3s cubic-bezier(.4, 0, .6, 1) forwards; }
+  @keyframes inkin { to { -webkit-mask-position: 0 0; mask-position: 0 0; } }
+  @keyframes trim { to { border-color: var(--ink); } }
+  @media (prefers-reduced-motion: reduce) { .ink, .sheet { animation: none; } .ink { -webkit-mask: none; mask: none; } .sheet { border-color: var(--ink); } }
+  h1 { margin: 0; font-size: 25px; font-weight: 700; letter-spacing: -.01em; line-height: 1.15; }
+  h1 span { color: var(--nr-text); }
+  p { margin: 6px 0 0; color: var(--ink-3); font-size: 13px; }
+  .status { margin-top: 22px; padding-top: 10px; border-top: 1px dashed var(--nr); display: flex; justify-content: space-between; font-size: 12px;
+    font-weight: 600; color: var(--nr-text); font-variant-numeric: tabular-nums; }
+</style>
+<script src="/splash.js"></script>
+</head>
+<body>
+  <div class="page" aria-hidden="true"><div class="sheet"><img src="/splash/sketch.webp" alt="" /><img class="ink" src="/splash/ink.webp" alt="" /></div></div>
+  <div>
+    <h1>Fumika</h1>
+    <p id="tag">Whole manga pages from one story.</p>
+    <div class="status"><span id="status">Opening the workspace …</span><span>v0.1.0 · by 7err4</span></div>
+  </div>
+</body>
+</html>

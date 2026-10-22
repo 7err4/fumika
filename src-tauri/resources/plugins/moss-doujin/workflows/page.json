@@ -1,0 +1,17 @@
+{
+  "1": {"class_type": "MossEasyDoujinPage", "inputs": {
+    "style": "{{style}}", "characters": "{{characters}}", "page": "{{page}}",
+    "character_lora": "{{lora ?? \"none\"}}", "lora_strength": "{{lora_strength}}",
+    "base_model": "{{base_model ?? \"auto (find it by name)\"}}", "text_encoder": "auto (find it by name)", "vae": "auto (find it by name)",
+    "turbo_lora": "auto (find it by name)",
+    "lora_2": "{{sft_look ?? \"none\"}}", "lora_2_strength": "{{sft_strength ?? 1.5}}", "loras": "{{loras ?? \"[]\"}}",
+    "reference": ["4", 0], "reference_lora": "{{reference_lora ?? \"none\"}}", "reference_strength": "{{reference_strength ?? 1.0}}", "reference_character": "{{reference_character ?? \"\"}}",
+    "reading_direction": "{{reading_direction ?? \"left to right\"}}",
+    "sampler": "{{sampler ?? \"auto\"}}", "scheduler": "{{scheduler ?? \"auto\"}}", "steps": "{{steps ?? 0}}", "cfg": "{{cfg ?? 0}}",
+    "slg_layers": "{{slg_layers ?? \"auto\"}}", "negative": "{{negative ?? \"auto\"}}",
+    "speed": "{{quality ? \"quality (50 steps)\" : \"auto (quality only for title pages)\"}}",
+    "versions": "{{versions}}", "page_size": "page 1024x1536", "seed": "{{seed}}"}},
+  "4": {"class_type": "LoadImage", "_when": "reference", "_unlink": true, "inputs": {"image": "{{reference ?? \"\"}}"}},
+  "2": {"class_type": "SaveImage", "inputs": {"images": ["1", 0], "filename_prefix": "{{prefix}}"}},
+  "3": {"class_type": "SaveImage", "inputs": {"images": ["1", 1], "filename_prefix": "{{prefix}}_v"}}
+}

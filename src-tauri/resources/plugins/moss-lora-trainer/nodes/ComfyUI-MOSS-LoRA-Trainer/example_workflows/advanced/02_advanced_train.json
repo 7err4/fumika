@@ -1,0 +1,335 @@
+{
+ "last_node_id": 6,
+ "last_link_id": 6,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MossTrainerInstall",
+   "pos": [
+    60,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "sd_scripts_dir",
+     "type": "STRING",
+     "links": [
+      4
+     ]
+    },
+    {
+     "name": "status",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossTrainerInstall"
+   },
+   "widgets_values": [
+    "",
+    "check"
+   ]
+  },
+  {
+   "id": 2,
+   "type": "MossTagsToSentences",
+   "pos": [
+    60,
+    280
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 4,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "dataset_dir",
+     "type": "STRING",
+     "links": []
+    },
+    {
+     "name": "example_caption",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossTagsToSentences"
+   },
+   "widgets_values": [
+    "C:/path/to/tag_dataset",
+    "C:/path/to/my_dataset",
+    "ohwx",
+    "an adult woman in her twenties with glossy black hair in a messy low ponytail with one light-blue streak in her bangs, light-blue eyes",
+    "ohwxdef = She wears her default outfit: white oversized shirt with rolled-up sleeves, black ribbon tie, black pleated skirt.",
+    "1girl, solo"
+   ]
+  },
+  {
+   "id": 3,
+   "type": "MossDatasetCheck",
+   "pos": [
+    60,
+    520
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "dataset_dir",
+     "type": "STRING",
+     "links": [
+      1
+     ]
+    },
+    {
+     "name": "ok",
+     "type": "BOOLEAN",
+     "links": [
+      5
+     ]
+    },
+    {
+     "name": "samples_per_epoch",
+     "type": "INT",
+     "links": [
+      2
+     ]
+    },
+    {
+     "name": "report",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossDatasetCheck"
+   },
+   "widgets_values": [
+    "C:/path/to/my_dataset"
+   ]
+  },
+  {
+   "id": 4,
+   "type": "MossTrainConfig",
+   "pos": [
+    500,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "dataset_dir",
+     "type": "STRING",
+     "link": 1
+    },
+    {
+     "name": "samples_per_epoch",
+     "type": "INT",
+     "link": 2
+    }
+   ],
+   "outputs": [
+    {
+     "name": "config",
+     "type": "MOSS_TRAIN_CONFIG",
+     "links": [
+      3
+     ]
+    },
+    {
+     "name": "summary",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossTrainConfig"
+   },
+   "widgets_values": [
+    "my_character",
+    "moss_image_base_bf16.safetensors",
+    "qwen3.5_9b_int8_convrot.safetensors",
+    "flux2-vae.safetensors",
+    8,
+    2,
+    32,
+    16,
+    0.0001,
+    "AdamW8bit",
+    1024,
+    1,
+    42,
+    "fixed",
+    0,
+    "moss_training",
+    "",
+    ""
+   ]
+  },
+  {
+   "id": 5,
+   "type": "MossTrainLaunch",
+   "pos": [
+    940,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "config",
+     "type": "MOSS_TRAIN_CONFIG",
+     "link": 3
+    },
+    {
+     "name": "sd_scripts_dir",
+     "type": "STRING",
+     "link": 4
+    },
+    {
+     "name": "dataset_ok",
+     "type": "BOOLEAN",
+     "link": 5
+    }
+   ],
+   "outputs": [
+    {
+     "name": "log_path",
+     "type": "STRING",
+     "links": [
+      6
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossTrainLaunch"
+   },
+   "widgets_values": [
+    false
+   ]
+  },
+  {
+   "id": 6,
+   "type": "MossTrainStatus",
+   "pos": [
+    1380,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "log_path",
+     "type": "STRING",
+     "link": 6,
+     "widget": {
+      "name": "log_path"
+     }
+    }
+   ],
+   "outputs": [
+    {
+     "name": "status",
+     "type": "STRING",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossTrainStatus"
+   },
+   "widgets_values": [
+    ""
+   ]
+  }
+ ],
+ "links": [
+  [
+   1,
+   3,
+   0,
+   4,
+   0,
+   "STRING"
+  ],
+  [
+   2,
+   3,
+   2,
+   4,
+   1,
+   "INT"
+  ],
+  [
+   3,
+   4,
+   0,
+   5,
+   0,
+   "MOSS_TRAIN_CONFIG"
+  ],
+  [
+   4,
+   1,
+   0,
+   5,
+   1,
+   "STRING"
+  ],
+  [
+   5,
+   3,
+   1,
+   5,
+   2,
+   "BOOLEAN"
+  ],
+  [
+   6,
+   5,
+   0,
+   6,
+   0,
+   "STRING"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {},
+ "version": 0.4
+}

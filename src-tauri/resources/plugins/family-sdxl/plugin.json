@@ -1,0 +1,113 @@
+{
+  "id": "family-sdxl",
+  "name": "SDXL / Illustrious",
+  "version": "1.0.0",
+  "author": "7err4",
+  "description": "SDXL checkpoints - Illustrious, NoobAI, Pony, Animagine and their mixes - with their LoRAs.",
+  "kinds": [
+    "family"
+  ],
+  "family": "SDXL / Illustrious",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [],
+  "nodes": [],
+  "models": [
+    {
+      "id": "illustrious_xl_v20",
+      "name": "Illustrious XL v2.0",
+      "file": "Illustrious-XL-v2.0.safetensors",
+      "dest": "checkpoints",
+      "url": "https://huggingface.co/OnomaAIResearch/Illustrious-XL-v2.0/resolve/main/Illustrious-XL-v2.0.safetensors",
+      "size": 6938040674,
+      "kind": "required",
+      "note": "anime SDXL base (OnomaAI); most Illustrious LoRAs and mixes build on it",
+      "license": "CreativeML OpenRAIL-M",
+      "license_url": "https://huggingface.co/OnomaAIResearch/Illustrious-XL-v2.0"
+    },
+    {
+      "id": "sdxl_animagine_40",
+      "name": "Animagine XL 4.0",
+      "file": "animagine-xl-4.0.safetensors",
+      "dest": "checkpoints",
+      "url": "https://huggingface.co/cagliostrolab/animagine-xl-4.0/resolve/main/animagine-xl-4.0.safetensors",
+      "size": 6938434056,
+      "kind": "optional",
+      "note": "second anime SDXL model (Cagliostro Lab)",
+      "license": "CreativeML OpenRAIL++-M",
+      "license_url": "https://huggingface.co/cagliostrolab/animagine-xl-4.0"
+    }
+  ],
+  "family_def": {
+    "id": "sdxl",
+    "name": "SDXL / Illustrious",
+    "loader": "checkpoint",
+    "te": "",
+    "vae": "",
+    "clip": "",
+    "latent": "EmptyLatentImage",
+    "bases": [
+      "illustrious_xl_v20",
+      "sdxl_animagine_40"
+    ],
+    "ckptKind": "checkpoints",
+    "recipe": {
+      "steps": 28,
+      "cfg": 5.5,
+      "sampler": "euler_ancestral",
+      "scheduler": "normal",
+      "slg": ""
+    },
+    "turbo": false,
+    "sft": false,
+    "slg": false,
+    "clipSkip": 2,
+    "clipLoras": true,
+    "match": "xl|illustrious|noob|pony|sdxl|animagine|wai",
+    "detect": ["conditioner.embedders.1.", "model.diffusion_model.input_blocks."],
+    "inpaintSide": 1024,
+    "sizes": [
+      [
+        "square",
+        1024,
+        1024
+      ],
+      [
+        "portrait",
+        832,
+        1216
+      ],
+      [
+        "landscape",
+        1216,
+        832
+      ],
+      [
+        "page",
+        896,
+        1344
+      ],
+      [
+        "wide",
+        1344,
+        768
+      ]
+    ],
+    "presets": [
+      {
+        "id": "sdxl-quality",
+        "name": "Illustrious: quality tags",
+        "positive": "masterpiece, best quality, amazing quality, very aesthetic, absurdres, newest",
+        "negative": "worst quality, low quality, lowres, bad anatomy, bad hands, jpeg artifacts, watermark, signature, text"
+      },
+      {
+        "id": "pony-quality",
+        "name": "Pony: score tags",
+        "positive": "score_9, score_8_up, score_7_up",
+        "negative": "score_4, score_5, score_6, worst quality, low quality, watermark, text"
+      }
+    ],
+    "order": 2
+  },
+  "workflows": {}
+}

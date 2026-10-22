@@ -1,0 +1,189 @@
+{
+  "last_node_id": 9,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "AnimaModelDownloader",
+      "pos": [50, 140],
+      "size": [320, 200],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {"name": "status_message", "type": "STRING", "links": null, "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "AnimaModelDownloader"},
+      "widgets_values": ["check_and_download", true, "base", true, true, ""],
+      "color": "#322",
+      "bgcolor": "#533",
+      "title": "0. Download Models (HuggingFace)"
+    },
+    {
+      "id": 1,
+      "type": "AnimaSDScriptsManager",
+      "pos": [50, 390],
+      "size": [320, 170],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {"name": "sdscripts_path", "type": "STRING", "links": [1], "slot_index": 0},
+        {"name": "version", "type": "STRING", "links": null, "slot_index": 1},
+        {"name": "status_message", "type": "STRING", "links": null, "slot_index": 2},
+        {"name": "is_ready", "type": "BOOLEAN", "links": [2], "slot_index": 3}
+      ],
+      "properties": {"Node name for S&R": "AnimaSDScriptsManager"},
+      "widgets_values": ["install_or_update", "main", "", true],
+      "color": "#223",
+      "bgcolor": "#335",
+      "title": "1. SD-Scripts Manager"
+    },
+    {
+      "id": 2,
+      "type": "AnimaModelSelector",
+      "pos": [50, 600],
+      "size": [320, 240],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {"name": "model_config", "type": "ANIMA_MODEL_CONFIG", "links": [3], "slot_index": 0},
+        {"name": "status_message", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "AnimaModelSelector"},
+      "widgets_values": [],
+      "color": "#232",
+      "bgcolor": "#353",
+      "title": "2. Select Models"
+    },
+    {
+      "id": 3,
+      "type": "AnimaBasicParams",
+      "pos": [420, 140],
+      "size": [360, 660],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "links": [4], "slot_index": 0},
+        {"name": "summary", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "AnimaBasicParams"},
+      "widgets_values": [],
+      "color": "#326",
+      "bgcolor": "#548",
+      "title": "3a. Basic Parameters"
+    },
+    {
+      "id": 4,
+      "type": "AnimaAdvancedParams",
+      "pos": [830, 140],
+      "size": [360, 480],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "link": 4}
+      ],
+      "outputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "links": [5], "slot_index": 0},
+        {"name": "overrides_applied", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "AnimaAdvancedParams"},
+      "widgets_values": [],
+      "color": "#323",
+      "bgcolor": "#535",
+      "title": "3b. Advanced (Optional)"
+    },
+    {
+      "id": 5,
+      "type": "AnimaMemoryOptimizer",
+      "pos": [1240, 140],
+      "size": [360, 380],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "link": 5}
+      ],
+      "outputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "links": [10], "slot_index": 0},
+        {"name": "memory_summary", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "AnimaMemoryOptimizer"},
+      "widgets_values": [],
+      "color": "#233",
+      "bgcolor": "#355",
+      "title": "3c. Memory (Optional)"
+    },
+    {
+      "id": 9,
+      "type": "AnimaVRAMEstimator",
+      "pos": [1650, 140],
+      "size": [430, 520],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "link": 10}
+      ],
+      "outputs": [
+        {"name": "training_params", "type": "TRAINING_PARAMS", "links": [11], "slot_index": 0},
+        {"name": "vram_report", "type": "STRING", "links": null, "slot_index": 1}
+      ],
+      "properties": {"Node name for S&R": "AnimaVRAMEstimator"},
+      "widgets_values": [12.0],
+      "color": "#244",
+      "bgcolor": "#466",
+      "title": "3d. VRAM Check (set your GPU size!)"
+    },
+    {
+      "id": 6,
+      "type": "AnimaTrainingLauncher",
+      "pos": [2130, 140],
+      "size": [400, 420],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "sdscripts_path", "type": "STRING", "link": 1},
+        {"name": "is_ready", "type": "BOOLEAN", "link": 2},
+        {"name": "model_config", "type": "ANIMA_MODEL_CONFIG", "link": 3},
+        {"name": "training_params", "type": "TRAINING_PARAMS", "link": 11}
+      ],
+      "outputs": [
+        {"name": "config_path", "type": "STRING", "links": null, "slot_index": 0},
+        {"name": "command", "type": "STRING", "links": null, "slot_index": 1},
+        {"name": "status_message", "type": "STRING", "links": null, "slot_index": 2}
+      ],
+      "properties": {"Node name for S&R": "AnimaTrainingLauncher"},
+      "widgets_values": ["toml", "", "", "", "", 0, 0, "euler", false],
+      "color": "#332",
+      "bgcolor": "#553",
+      "title": "4. Launch Training"
+    }
+  ],
+  "links": [
+    [1, 1, 0, 6, 0, "STRING"],
+    [2, 1, 3, 6, 1, "BOOLEAN"],
+    [3, 2, 0, 6, 2, "ANIMA_MODEL_CONFIG"],
+    [4, 3, 0, 4, 0, "TRAINING_PARAMS"],
+    [5, 4, 0, 5, 0, "TRAINING_PARAMS"],
+    [10, 5, 0, 9, 0, "TRAINING_PARAMS"],
+    [11, 9, 0, 6, 3, "TRAINING_PARAMS"]
+  ],
+  "groups": [
+    {
+      "title": "Anima LoRA - Manual Mode (Full Control)",
+      "bounding": [30, 100, 2530, 740],
+      "color": "#9e3f3f",
+      "font_size": 24
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {"scale": 0.6, "offset": [0, 0]}
+  },
+  "version": 0.4
+}

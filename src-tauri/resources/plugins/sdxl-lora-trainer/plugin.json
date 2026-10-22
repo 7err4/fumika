@@ -1,0 +1,44 @@
+{
+  "id": "sdxl-lora-trainer",
+  "name": "SDXL LoRA Trainer",
+  "version": "1.1.0",
+  "author": "7err4",
+  "description": "Train LoRAs, LyCORIS (LoCon / LoHa / LoKr) and embeddings for SDXL checkpoints (Illustrious, NoobAI, Pony) with kohya sd-scripts: check, plan, train in its own window, test the epochs.",
+  "kinds": [
+    "train"
+  ],
+  "family": "SDXL / Illustrious",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "trainer"
+  ],
+  "requires": [
+    "family-sdxl"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-SDXL-LoRA-Trainer"
+  ],
+  "models": [],
+  "workflows": {
+    "train": {
+      "file": "workflows/train.json",
+      "defaults": {
+        "dataset": "",
+        "name": "my_character",
+        "start": false,
+        "epochs": 0,
+        "rank": 32,
+        "learning_rate": 0.0001,
+        "resolution": 1024
+      }
+    },
+    "epochs": {
+      "file": "workflows/epochs.json",
+      "defaults": {
+        "name": "my_character",
+        "test_prompts": ""
+      }
+    }
+  }
+}

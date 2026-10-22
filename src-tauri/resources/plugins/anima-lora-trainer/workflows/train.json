@@ -1,0 +1,21 @@
+{
+  "1": {"class_type": "AnimaSDScriptsManager", "inputs": {
+    "action": "{{start ? \"install_or_update\" : \"check_only\"}}", "branch": "main", "custom_sdscripts_path": "", "install_requirements": true}},
+  "2": {"class_type": "AnimaModelSelector", "inputs": {
+    "dit_model": "{{dit_model}}", "qwen3_encoder": "{{text_encoder}}", "vae": "{{vae}}",
+    "dit_custom_path": "", "qwen3_custom_path": "", "vae_custom_path": "", "llm_adapter_path": ""}},
+  "3": {"class_type": "AnimaTrainingWizard", "inputs": {
+    "train_data_dir": "{{dataset}}", "output_dir": "{{output_dir}}", "output_name": "{{name}}",
+    "what_are_you_training": "{{subject}}", "dataset_size": "{{dataset_size}}", "image_resolution": "{{resolution}}",
+    "gpu_vram": "{{gpu_vram}}", "quality_goal": "{{quality}}", "network_type": "{{network_type ?? \"LoRA\"}}",
+    "training_seed": "{{training_seed ?? 42}}", "force_max_train_epochs": "{{force_epochs ?? 0}}", "force_network_rank": "{{force_rank ?? 0}}",
+    "force_learning_rate": "{{force_lr ?? 0}}", "force_batch_size": "{{force_batch ?? 0}}", "force_resolution": "{{force_resolution ?? \"\"}}",
+    "force_save_every_n_epochs": "{{force_save_every ?? 0}}", "force_blocks_to_swap": "{{force_blocks_to_swap ?? -1}}"}},
+  "4": {"class_type": "AnimaVRAMEstimator", "inputs": {"training_params": ["3", 0], "gpu_vram_gb": "{{gpu_vram_gb}}", "model_config": ["2", 0]}},
+  "5": {"class_type": "AnimaConfigPreview", "inputs": {"model_config": ["2", 0], "training_params": ["4", 0]}},
+  "6": {"class_type": "AnimaTrainingLauncher", "inputs": {
+    "sdscripts_path": ["1", 0], "is_ready": ["1", 3], "model_config": ["2", 0], "training_params": ["4", 0],
+    "config_format": "toml", "python_executable": "", "extra_args": "", "resume_from": "",
+    "sample_prompts": "{{sample_prompt}}", "sample_every_n_steps": 0, "sample_every_n_epochs": "{{sample_every}}",
+    "sample_sampler": "euler", "dry_run": "{{start ? false : true}}"}}
+}

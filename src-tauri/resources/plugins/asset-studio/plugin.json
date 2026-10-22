@@ -1,0 +1,133 @@
+{
+  "id": "asset-studio",
+  "name": "Asset Studio",
+  "version": "1.1.0",
+  "author": "7err4",
+  "description": "Character assets in one image each: expression sets, outfit variants, turnarounds, profile sheets, item cards and chibi stickers - optionally as transparent VN sprites.",
+  "kinds": [
+    "generate"
+  ],
+  "family": "MOSS-Image",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "assets"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-Fumika-Asset-Studio",
+    "../moss-doujin/nodes/ComfyUI-MOSS-Image-Ostris-Edit",
+    "../image-studio/nodes/ComfyUI-Fumika-Image"
+  ],
+  "models": [
+    {
+      "id": "moss_base_bf16",
+      "name": "MOSS-Image Base (bf16, best quality)",
+      "file": "moss_image_base_bf16.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with 24 GB VRAM or more",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "moss_base_int8",
+      "name": "MOSS-Image Base (int8, smaller)",
+      "file": "moss_image_base_int8_convrot.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_int8_convrot.safetensors",
+      "size": 5413698958,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with less than 24 GB VRAM",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "qwen_te",
+      "name": "Qwen3.5-9B text encoder (int8)",
+      "file": "qwen3.5_9b_int8_convrot.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_int8_convrot.safetensors",
+      "size": 9748121532,
+      "kind": "required",
+      "note": "reads your sentences and the page layout",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "vae",
+      "name": "FLUX.2 VAE",
+      "file": "flux2-vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/vae/flux2-vae.safetensors",
+      "size": 336211292,
+      "kind": "required",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "sft_look",
+      "name": "SFT look LoRA (richer pages)",
+      "file": "moss_image_sft_look_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA/resolve/main/moss_image_sft_look_lora.safetensors",
+      "size": 2221764612,
+      "kind": "recommended",
+      "note": "gives MOSS Base the look of the official SFT model: more detailed backgrounds and faces",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA"
+    },
+    {
+      "id": "charref_v2",
+      "name": "CharRef v2 (reference picture)",
+      "file": "moss_image_charref_v2.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/7err4/MOSS-Image-CharRef/resolve/main/moss_image_charref_v2.safetensors",
+      "size": 148697656,
+      "kind": "optional",
+      "note": "draw the main character after a reference picture",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/7err4/MOSS-Image-CharRef"
+    },
+    {
+      "id": "birefnet",
+      "name": "BiRefNet background removal",
+      "file": "birefnet.safetensors",
+      "dest": "background_removal",
+      "url": "https://huggingface.co/Comfy-Org/BiRefNet/resolve/main/background_removal/birefnet.safetensors",
+      "size": 444473596,
+      "kind": "recommended",
+      "note": "cuts the figures out for transparent VN sprites",
+      "license": "MIT",
+      "license_url": "https://huggingface.co/Comfy-Org/BiRefNet"
+    }
+  ],
+  "workflows": {
+    "asset": {
+      "file": "workflows/asset.json",
+      "defaults": {
+        "asset": "expressions",
+        "style": "Anime colour",
+        "fields": "{}",
+        "labels": true,
+        "lora": "",
+        "lora_strength": 1.0,
+        "base_model": "",
+        "sft_look": "",
+        "reference": "",
+        "reference_lora": "",
+        "reference_strength": 1.0,
+        "versions": 2,
+        "transparent": false,
+        "bg_model": "",
+        "loras": "[]"
+      }
+    }
+  },
+  "requires": [
+    "family-moss"
+  ]
+}

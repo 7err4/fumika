@@ -1,0 +1,9 @@
+{
+  "_about": "Rating sentence that starts every MOSS caption, chosen by the image's WD tagger rating label. MOSS-Image was trained with these sentences, so keep the defaults unless you know your base model expects others.",
+  "general": "Safe image.",
+  "safe": "Safe image.",
+  "sensitive": "Suggestive image.",
+  "questionable": "Suggestive image.",
+  "nsfw": "Nude image.",
+  "explicit": "Explicit uncensored image."
+}

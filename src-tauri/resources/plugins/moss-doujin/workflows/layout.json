@@ -1,0 +1,19 @@
+{
+  "1": {"class_type": "UNETLoader", "inputs": {"unet_name": "{{base_model}}", "weight_dtype": "default"}},
+  "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": "{{text_encoder}}", "type": "moss_image", "device": "default"}},
+  "3": {"class_type": "VAELoader", "inputs": {"vae_name": "{{vae}}"}},
+  "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": "{{prompt}}"}},
+  "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": ""}},
+  "6": {"class_type": "EmptyFlux2LatentImage", "inputs": {"width": "{{width}}", "height": "{{height}}", "batch_size": 1}},
+  "13": {"class_type": "LoraLoaderModelOnly", "inputs": {"model": ["1", 0], "lora_name": "{{turbo_lora}}", "strength_model": "{{full ? 0.0 : 1.0}}"}},
+  "14": {"_when": "lora", "_bypass": "model",
+         "class_type": "LoraLoaderModelOnly", "inputs": {"model": ["13", 0], "lora_name": "{{lora}}", "strength_model": "{{lora_strength}}"}},
+  "15": {"_when": "full", "_bypass": "model",
+         "class_type": "SkipLayerGuidanceDiTSimple", "inputs": {"double_layers": "", "single_layers": "22", "start_percent": 0, "end_percent": 1,
+         "model": ["14", 0]}},
+  "16": {"class_type": "KSampler", "inputs": {"seed": "{{seed}}", "steps": "{{full ? 50 : 8}}", "cfg": "{{full ? 3 : 1}}", "sampler_name": "euler",
+         "scheduler": "{{full ? \"sgm_uniform\" : \"simple\"}}", "denoise": 1,
+         "model": ["15", 0], "positive": ["4", 0], "negative": ["5", 0], "latent_image": ["6", 0]}},
+  "17": {"class_type": "VAEDecode", "inputs": {"samples": ["16", 0], "vae": ["3", 0]}},
+  "18": {"class_type": "SaveImage", "inputs": {"images": ["17", 0], "filename_prefix": "{{prefix}}"}}
+}

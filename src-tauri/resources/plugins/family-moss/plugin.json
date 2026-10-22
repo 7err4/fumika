@@ -1,0 +1,182 @@
+{
+  "id": "family-moss",
+  "name": "MOSS-Image",
+  "version": "1.0.0",
+  "author": "7err4",
+  "description": "MOSS-Image models for every workspace: base model, text encoder, VAE, turbo and SFT look LoRA.",
+  "kinds": [
+    "family"
+  ],
+  "family": "MOSS-Image",
+  "content": "sfw",
+  "license": "Apache-2.0",
+  "ui": [],
+  "nodes": [],
+  "models": [
+    {
+      "id": "moss_base_bf16",
+      "name": "MOSS-Image Base (bf16, best quality)",
+      "file": "moss_image_base_bf16.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with 24 GB VRAM or more",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "moss_base_int8",
+      "name": "MOSS-Image Base (int8, smaller)",
+      "file": "moss_image_base_int8_convrot.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_int8_convrot.safetensors",
+      "size": 5413698958,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with less than 24 GB VRAM",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "qwen_te",
+      "name": "Qwen3.5-9B text encoder (int8)",
+      "file": "qwen3.5_9b_int8_convrot.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_int8_convrot.safetensors",
+      "size": 9748121532,
+      "kind": "required",
+      "note": "reads your sentences and the page layout",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "vae",
+      "name": "FLUX.2 VAE",
+      "file": "flux2-vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/vae/flux2-vae.safetensors",
+      "size": 336211292,
+      "kind": "required",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "turbo",
+      "name": "8-step turbo LoRA (6x faster)",
+      "file": "kromoss_8steps_dmd_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/lodestones/Kromoss/resolve/main/8-steps-dmd-lora.safetensors",
+      "size": 1189176800,
+      "kind": "recommended",
+      "note": "without it every page uses the slow 50-step mode",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/lodestones/Kromoss"
+    },
+    {
+      "id": "sft_look",
+      "name": "SFT look LoRA (richer pages)",
+      "file": "moss_image_sft_look_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA/resolve/main/moss_image_sft_look_lora.safetensors",
+      "size": 2221764612,
+      "kind": "recommended",
+      "note": "gives MOSS Base the look of the official SFT model: more detailed backgrounds and faces",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA"
+    },
+    {
+      "id": "kromoss",
+      "name": "Kromoss (MOSS fine-tune, glossier / more 3D)",
+      "file": "kromoss_bf16.safetensors",
+      "note": "experimental: character LoRAs trained on MOSS Base can look off or overcooked on Kromoss; use Base for your own characters",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/lodestones/Kromoss/resolve/main/diffusion_models/kromoss_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "optional",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/lodestones/Kromoss"
+    }
+  ],
+  "family_def": {
+    "id": "moss",
+    "name": "MOSS-Image",
+    "loader": "split",
+    "te": "qwen3.5_9b_int8_convrot.safetensors",
+    "vae": "flux2-vae.safetensors",
+    "clip": "moss_image",
+    "latent": "EmptyFlux2LatentImage",
+    "bases": [
+      "moss_base_bf16",
+      "moss_base_int8",
+      "kromoss"
+    ],
+    "ckptKind": "diffusion_models",
+    "recipe": {
+      "steps": 50,
+      "cfg": 3,
+      "sampler": "euler",
+      "scheduler": "sgm_uniform",
+      "slg": "22"
+    },
+    "fast": {
+      "steps": 8,
+      "cfg": 1,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "slg": ""
+    },
+    "turbo": true,
+    "sft": true,
+    "slg": true,
+    "clipSkip": 0,
+    "clipLoras": false,
+    "match": "moss|kromoss|charref",
+    "detect": ["rope.bands", "final_linear_video.weight"],
+    "inpaintSide": 1024,
+    "sizes": [
+      [
+        "square",
+        1024,
+        1024
+      ],
+      [
+        "portrait",
+        896,
+        1152
+      ],
+      [
+        "landscape",
+        1152,
+        896
+      ],
+      [
+        "page",
+        1024,
+        1536
+      ],
+      [
+        "wide",
+        1536,
+        1024
+      ]
+    ],
+    "presets": [
+      {
+        "id": "moss-clean",
+        "name": "MOSS: no stray text",
+        "positive": "",
+        "negative": "extra speech bubbles, gibberish text, watermark"
+      },
+      {
+        "id": "moss-detail",
+        "name": "MOSS: detailed illustration",
+        "positive": "detailed anime illustration, clean lineart, soft shading",
+        "negative": "blurry, low detail, watermark"
+      }
+    ],
+    "order": 1
+  },
+  "workflows": {}
+}

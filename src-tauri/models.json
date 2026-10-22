@@ -1,0 +1,37 @@
+[
+ {
+  "id": "comfy_portable",
+  "name": "ComfyUI Windows Portable 0.42 (NVIDIA)",
+  "file": "ComfyUI_windows_portable_nvidia.7z",
+  "dest": "",
+  "url": "https://github.com/Comfy-Org/ComfyUI/releases/download/v0.42.1/ComfyUI_windows_portable_nvidia.7z",
+  "size": 2018444114,
+  "kind": "required",
+  "note": "the image engine, includes its own Python - does not touch other installs",
+  "os": "windows"
+ },
+ {
+  "id": "comfy_linux",
+  "name": "ComfyUI 0.42 for Linux (NVIDIA)",
+  "file": "ComfyUI-0.42.1.tar.gz",
+  "dest": "",
+  "url": "https://github.com/Comfy-Org/ComfyUI/archive/refs/tags/v0.42.1.tar.gz",
+  "size": 0,
+  "kind": "required",
+  "os": "linux",
+  "note": "the image engine; Python 3.13 and PyTorch (about 4 GB) are installed into its own folder - does not touch other installs"
+ },
+ {
+  "id": "uv_linux",
+  "name": "uv 0.12 (Python installer)",
+  "file": "uv-x86_64-unknown-linux-gnu.tar.gz",
+  "dest": "",
+  "url": "https://github.com/astral-sh/uv/releases/download/0.12.23/uv-x86_64-unknown-linux-gnu.tar.gz",
+  "size": 19906150,
+  "kind": "required",
+  "os": "linux",
+  "note": "sets up the engine's own Python",
+  "license": "MIT / Apache-2.0",
+  "license_url": "https://github.com/astral-sh/uv/blob/main/LICENSE-MIT"
+ }
+]

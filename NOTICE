@@ -1,0 +1,22 @@
+Fumika
+Copyright (c) 2026 7err4 - https://github.com/7err4
+
+Fumika is licensed under the Apache License 2.0 with the Commons Clause License Condition v1.0 (see LICENSE): use it for anything,
+commercial work included, modify it and share it for free - but you may not sell the software itself or a product or service whose
+value derives entirely or substantially from it.
+The ComfyUI node packs in src-tauri/resources/plugins/*/nodes/ are licensed under the GNU GPL v3.0 (see the LICENSE file in
+each pack), except the third-party packs
+- ComfyUI-MOSS-Image-Ostris-Edit (MIT, Copyright (c) 2026 Ostris, LLC), bundled unmodified with its LICENSE, and
+- ComfyUI-SeedVR2_VideoUpscaler (Apache License 2.0, numz / AInVFX, contains code of ByteDance SeedVR2), bundled with its LICENSE;
+  code unchanged, docs / examples / CLI left out (see BUNDLED.md in the pack).
+
+Under section 4 of the Apache License, any copy, fork or redistribution must keep this NOTICE file, the Commons Clause notice and
+the author credit shown in the app (Setup -> About, splash screen).
+
+The name "Fumika", the logo and icons and the characters Fumika and Terra are not covered by these licences (Apache License 2.0,
+section 6: no trademark rights) - all rights reserved. Forks must use their own name and artwork.
+
+Everything you make with Fumika (pages, comics, assets, trained LoRAs) is yours; the licences above cover the software, not your
+work. Models keep their own licences.
+
+Bundled font: Libre Franklin, Copyright 2020 The Libre Franklin Project Authors, SIL Open Font License 1.1 (public/fonts/OFL.txt).

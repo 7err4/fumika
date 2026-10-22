@@ -1,0 +1,710 @@
+{
+ "last_node_id": 21,
+ "last_link_id": 18,
+ "nodes": [
+  {
+   "id": 1,
+   "type": "MossEpochGridPlan",
+   "pos": [
+    60,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 0,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "lora_name",
+     "type": "STRING",
+     "links": [
+      3
+     ]
+    },
+    {
+     "name": "strength",
+     "type": "FLOAT",
+     "links": [
+      4
+     ]
+    },
+    {
+     "name": "prompt",
+     "type": "STRING",
+     "links": [
+      5
+     ]
+    },
+    {
+     "name": "seed",
+     "type": "INT",
+     "links": [
+      9
+     ]
+    },
+    {
+     "name": "label",
+     "type": "STRING",
+     "links": [
+      16
+     ]
+    },
+    {
+     "name": "columns",
+     "type": "INT",
+     "links": [
+      17
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossEpochGridPlan"
+   },
+   "widgets_values": [
+    "moss_training/my_character",
+    "Safe image. ohwx, <your identity sentence>. Full body, standing, smile, park.\n---\nSuggestive image. ohwx, <your identity sentence>. From behind, looking back, bedroom.",
+    true,
+    71000,
+    "fixed",
+    1.0
+   ]
+  },
+  {
+   "id": 10,
+   "type": "UNETLoader",
+   "pos": [
+    60,
+    280
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 1,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      1
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "UNETLoader"
+   },
+   "widgets_values": [
+    "moss_image_base_bf16.safetensors",
+    "default"
+   ]
+  },
+  {
+   "id": 11,
+   "type": "CLIPLoader",
+   "pos": [
+    60,
+    520
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 2,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "CLIP",
+     "type": "CLIP",
+     "links": [
+      6,
+      7
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPLoader"
+   },
+   "widgets_values": [
+    "qwen3.5_9b_int8_convrot.safetensors",
+    "moss_image",
+    "default"
+   ]
+  },
+  {
+   "id": 12,
+   "type": "VAELoader",
+   "pos": [
+    60,
+    760
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 3,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "VAE",
+     "type": "VAE",
+     "links": [
+      14
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAELoader"
+   },
+   "widgets_values": [
+    "flux2-vae.safetensors"
+   ]
+  },
+  {
+   "id": 13,
+   "type": "LoraLoaderModelOnly",
+   "pos": [
+    500,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 4,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 1
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      2
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "LoraLoaderModelOnly"
+   },
+   "widgets_values": [
+    "kromoss_8steps_dmd_lora.safetensors",
+    1.0
+   ]
+  },
+  {
+   "id": 14,
+   "type": "MossEpochLoraLoader",
+   "pos": [
+    940,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 5,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 2
+    },
+    {
+     "name": "lora_name",
+     "type": "STRING",
+     "link": 3
+    },
+    {
+     "name": "strength",
+     "type": "FLOAT",
+     "link": 4
+    }
+   ],
+   "outputs": [
+    {
+     "name": "MODEL",
+     "type": "MODEL",
+     "links": [
+      8
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossEpochLoraLoader"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 15,
+   "type": "CLIPTextEncode",
+   "pos": [
+    500,
+    280
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 6,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "text",
+     "type": "STRING",
+     "link": 5,
+     "widget": {
+      "name": "text"
+     }
+    },
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 6
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      10
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    0
+   ]
+  },
+  {
+   "id": 16,
+   "type": "CLIPTextEncode",
+   "pos": [
+    500,
+    520
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 7,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "clip",
+     "type": "CLIP",
+     "link": 7
+    }
+   ],
+   "outputs": [
+    {
+     "name": "CONDITIONING",
+     "type": "CONDITIONING",
+     "links": [
+      11
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "CLIPTextEncode"
+   },
+   "widgets_values": [
+    ""
+   ]
+  },
+  {
+   "id": 17,
+   "type": "EmptyFlux2LatentImage",
+   "pos": [
+    60,
+    1000
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 8,
+   "mode": 0,
+   "inputs": [],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      12
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "EmptyFlux2LatentImage"
+   },
+   "widgets_values": [
+    832,
+    1216,
+    1
+   ]
+  },
+  {
+   "id": 18,
+   "type": "KSampler",
+   "pos": [
+    1380,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 9,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "model",
+     "type": "MODEL",
+     "link": 8
+    },
+    {
+     "name": "seed",
+     "type": "INT",
+     "link": 9,
+     "widget": {
+      "name": "seed"
+     }
+    },
+    {
+     "name": "positive",
+     "type": "CONDITIONING",
+     "link": 10
+    },
+    {
+     "name": "negative",
+     "type": "CONDITIONING",
+     "link": 11
+    },
+    {
+     "name": "latent_image",
+     "type": "LATENT",
+     "link": 12
+    }
+   ],
+   "outputs": [
+    {
+     "name": "LATENT",
+     "type": "LATENT",
+     "links": [
+      13
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "KSampler"
+   },
+   "widgets_values": [
+    0,
+    "fixed",
+    8,
+    1.0,
+    "euler",
+    "simple",
+    1.0
+   ]
+  },
+  {
+   "id": 19,
+   "type": "VAEDecode",
+   "pos": [
+    1820,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 10,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "samples",
+     "type": "LATENT",
+     "link": 13
+    },
+    {
+     "name": "vae",
+     "type": "VAE",
+     "link": 14
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      15
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "VAEDecode"
+   },
+   "widgets_values": []
+  },
+  {
+   "id": 20,
+   "type": "MossEpochGrid",
+   "pos": [
+    2260,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 11,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 15
+    },
+    {
+     "name": "labels",
+     "type": "STRING",
+     "link": 16
+    },
+    {
+     "name": "columns",
+     "type": "INT",
+     "link": 17
+    }
+   ],
+   "outputs": [
+    {
+     "name": "IMAGE",
+     "type": "IMAGE",
+     "links": [
+      18
+     ]
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "MossEpochGrid"
+   },
+   "widgets_values": [
+    384
+   ]
+  },
+  {
+   "id": 21,
+   "type": "SaveImage",
+   "pos": [
+    2700,
+    40
+   ],
+   "size": [
+    400,
+    180
+   ],
+   "flags": {},
+   "order": 12,
+   "mode": 0,
+   "inputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "link": 18
+    }
+   ],
+   "outputs": [
+    {
+     "name": "images",
+     "type": "IMAGE",
+     "links": []
+    }
+   ],
+   "properties": {
+    "Node name for S&R": "SaveImage"
+   },
+   "widgets_values": [
+    "epoch_test/grid"
+   ]
+  }
+ ],
+ "links": [
+  [
+   1,
+   10,
+   0,
+   13,
+   0,
+   "MODEL"
+  ],
+  [
+   2,
+   13,
+   0,
+   14,
+   0,
+   "MODEL"
+  ],
+  [
+   3,
+   1,
+   0,
+   14,
+   1,
+   "STRING"
+  ],
+  [
+   4,
+   1,
+   1,
+   14,
+   2,
+   "FLOAT"
+  ],
+  [
+   5,
+   1,
+   2,
+   15,
+   0,
+   "STRING"
+  ],
+  [
+   6,
+   11,
+   0,
+   15,
+   1,
+   "CLIP"
+  ],
+  [
+   7,
+   11,
+   0,
+   16,
+   0,
+   "CLIP"
+  ],
+  [
+   8,
+   14,
+   0,
+   18,
+   0,
+   "MODEL"
+  ],
+  [
+   9,
+   1,
+   3,
+   18,
+   1,
+   "INT"
+  ],
+  [
+   10,
+   15,
+   0,
+   18,
+   2,
+   "CONDITIONING"
+  ],
+  [
+   11,
+   16,
+   0,
+   18,
+   3,
+   "CONDITIONING"
+  ],
+  [
+   12,
+   17,
+   0,
+   18,
+   4,
+   "LATENT"
+  ],
+  [
+   13,
+   18,
+   0,
+   19,
+   0,
+   "LATENT"
+  ],
+  [
+   14,
+   12,
+   0,
+   19,
+   1,
+   "VAE"
+  ],
+  [
+   15,
+   19,
+   0,
+   20,
+   0,
+   "IMAGE"
+  ],
+  [
+   16,
+   1,
+   4,
+   20,
+   1,
+   "STRING"
+  ],
+  [
+   17,
+   1,
+   5,
+   20,
+   2,
+   "INT"
+  ],
+  [
+   18,
+   20,
+   0,
+   21,
+   0,
+   "IMAGE"
+  ]
+ ],
+ "groups": [],
+ "config": {},
+ "extra": {},
+ "version": 0.4
+}

@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# internal working files stay local (design tool state, internal planning notes with private plans)
+.impeccable/
+PLAN.md
+PRODUCT.md
+
+# local start scripts (German, this PC only)
+Fumika*.bat
+# demo page renders for screenshots (research_moss/demo_pages.py)
+public/demo-pages/
+# Asset Studio demo renders for screenshots (prototype, local only)
+public/demo-assets/
+
+# Python bytecode of the bundled node packs
+__pycache__/
+*.pyc

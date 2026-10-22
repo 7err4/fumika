@@ -1,0 +1,215 @@
+{
+ "1": {
+  "class_type": "UNETLoader",
+  "inputs": {
+   "unet_name": "{{base_model ?? \"moss_image_base_bf16.safetensors\"}}",
+   "weight_dtype": "default"
+  }
+ },
+ "2": {
+  "class_type": "CLIPLoader",
+  "inputs": {
+   "clip_name": "qwen3.5_9b_int8_convrot.safetensors",
+   "type": "moss_image",
+   "device": "default"
+  }
+ },
+ "3": {
+  "class_type": "VAELoader",
+  "inputs": {
+   "vae_name": "flux2-vae.safetensors"
+  }
+ },
+ "5": {
+  "class_type": "FumikaLoraStack",
+  "inputs": {
+   "model": [
+    "1",
+    0
+   ],
+   "loras": "{{loras ?? \"[]\"}}"
+  }
+ },
+ "6": {
+  "class_type": "LoraLoaderModelOnly",
+  "_when": "sft_look",
+  "_bypass": "model",
+  "inputs": {
+   "model": [
+    "5",
+    0
+   ],
+   "lora_name": "{{sft_look ?? \"\"}}",
+   "strength_model": 1.5
+  }
+ },
+ "7": {
+  "class_type": "MOSSImageOstrisEditModelPatch",
+  "_when": "reference_lora",
+  "_bypass": "model",
+  "inputs": {
+   "model": [
+    "6",
+    0
+   ],
+   "kv_cache": true
+  }
+ },
+ "8": {
+  "class_type": "LoraLoaderModelOnly",
+  "_when": "reference_lora",
+  "_bypass": "model",
+  "inputs": {
+   "model": [
+    "7",
+    0
+   ],
+   "lora_name": "{{reference_lora ?? \"\"}}",
+   "strength_model": "{{reference_strength}}"
+  }
+ },
+ "9": {
+  "class_type": "SkipLayerGuidanceDiTSimple",
+  "inputs": {
+   "model": [
+    "8",
+    0
+   ],
+   "double_layers": "",
+   "single_layers": "22",
+   "start_percent": 0.0,
+   "end_percent": 1.0
+  }
+ },
+ "10": {
+  "class_type": "FumikaAssetSheet",
+  "inputs": {
+   "asset": "{{asset}}",
+   "character": "{{character}}",
+   "style": "{{style}}",
+   "fields": "{{fields}}",
+   "labels": "{{labels}}"
+  }
+ },
+ "11": {
+  "class_type": "LoadImage",
+  "_when": "reference_lora",
+  "_unlink": true,
+  "inputs": {
+   "image": "{{reference ?? \"\"}}"
+  }
+ },
+ "12": {
+  "class_type": "FumikaAssetEncode",
+  "inputs": {
+   "clip": [
+    "2",
+    0
+   ],
+   "vae": [
+    "3",
+    0
+   ],
+   "prompt": [
+    "10",
+    0
+   ],
+   "reference": [
+    "11",
+    0
+   ]
+  }
+ },
+ "13": {
+  "class_type": "EmptyFlux2LatentImage",
+  "inputs": {
+   "width": [
+    "10",
+    2
+   ],
+   "height": [
+    "10",
+    3
+   ],
+   "batch_size": "{{versions}}"
+  }
+ },
+ "14": {
+  "class_type": "KSampler",
+  "inputs": {
+   "model": [
+    "9",
+    0
+   ],
+   "positive": [
+    "12",
+    0
+   ],
+   "negative": [
+    "12",
+    1
+   ],
+   "latent_image": [
+    "13",
+    0
+   ],
+   "seed": "{{seed}}",
+   "steps": 50,
+   "cfg": 3.0,
+   "sampler_name": "euler",
+   "scheduler": "sgm_uniform",
+   "denoise": 1.0
+  }
+ },
+ "15": {
+  "class_type": "VAEDecode",
+  "inputs": {
+   "samples": [
+    "14",
+    0
+   ],
+   "vae": [
+    "3",
+    0
+   ]
+  }
+ },
+ "16": {
+  "class_type": "SaveImage",
+  "inputs": {
+   "images": [
+    "15",
+    0
+   ],
+   "filename_prefix": "{{prefix}}"
+  }
+ },
+ "17": {
+  "class_type": "LoadBackgroundRemovalModel",
+  "_when": "transparent",
+  "_unlink": true,
+  "inputs": {
+   "bg_removal_name": "{{bg_model ?? \"birefnet.safetensors\"}}"
+  }
+ },
+ "18": {
+  "class_type": "FumikaSpriteCutout",
+  "_when": "transparent",
+  "_unlink": true,
+  "inputs": {
+   "images": [
+    "15",
+    0
+   ],
+   "boxes": [
+    "10",
+    1
+   ],
+   "bg_removal_model": [
+    "17",
+    0
+   ],
+   "prefix": "{{prefix}}_cut"
+  }
+ }
+}

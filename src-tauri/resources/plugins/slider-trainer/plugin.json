@@ -1,0 +1,41 @@
+{
+  "id": "slider-trainer",
+  "name": "Slider Trainer",
+  "version": "1.0.0",
+  "author": "7err4",
+  "description": "Train slider LoRAs (Concept Sliders) for Anima (1.0, 2.9B, 3.8B): from two prompts without any dataset, or from two folders of pictures. Use the result at -2 ... +2 to push a concept up or down.",
+  "kinds": [
+    "train"
+  ],
+  "family": "Anima",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "trainer"
+  ],
+  "requires_one": [
+    "family-anima",
+    "family-anima38"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-Fumika-Slider-Trainer"
+  ],
+  "models": [],
+  "workflows": {
+    "train": {
+      "file": "workflows/train.json",
+      "defaults": {
+        "family": "anima",
+        "mode": "text",
+        "name": "my_slider",
+        "start": false,
+        "rank": 8,
+        "alpha": 4.0,
+        "learning_rate": 0.0002,
+        "guidance": 3.0,
+        "steps": 500,
+        "save_every": 100
+      }
+    }
+  }
+}

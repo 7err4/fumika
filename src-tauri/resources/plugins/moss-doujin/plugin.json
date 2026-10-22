@@ -1,0 +1,177 @@
+{
+  "id": "moss-doujin",
+  "name": "MOSS Doujin",
+  "version": "1.6.0",
+  "author": "7err4",
+  "description": "A story becomes finished comic pages with MOSS-Image: panels, speech bubbles and the cleanest of 3 versions per page.",
+  "kinds": [
+    "generate"
+  ],
+  "family": "MOSS-Image",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [
+    "comic"
+  ],
+  "nodes": [
+    "nodes/ComfyUI-MOSS-Doujin",
+    "nodes/ComfyUI-MOSS-Image-Ostris-Edit"
+  ],
+  "models": [
+    {
+      "id": "moss_base_bf16",
+      "name": "MOSS-Image Base (bf16, best quality)",
+      "file": "moss_image_base_bf16.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with 24 GB VRAM or more",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "moss_base_int8",
+      "name": "MOSS-Image Base (int8, smaller)",
+      "file": "moss_image_base_int8_convrot.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/diffusion_models/moss_image_base_int8_convrot.safetensors",
+      "size": 5413698958,
+      "kind": "required",
+      "group": "base",
+      "note": "for GPUs with less than 24 GB VRAM",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "qwen_te",
+      "name": "Qwen3.5-9B text encoder (int8)",
+      "file": "qwen3.5_9b_int8_convrot.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/text_encoders/qwen3.5_9b_int8_convrot.safetensors",
+      "size": 9748121532,
+      "kind": "required",
+      "note": "reads your sentences and the page layout",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "vae",
+      "name": "FLUX.2 VAE",
+      "file": "flux2-vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/Comfy-Org/MOSS-Image/resolve/main/vae/flux2-vae.safetensors",
+      "size": 336211292,
+      "kind": "required",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/Comfy-Org/MOSS-Image"
+    },
+    {
+      "id": "turbo",
+      "name": "8-step turbo LoRA (6x faster)",
+      "file": "kromoss_8steps_dmd_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/lodestones/Kromoss/resolve/main/8-steps-dmd-lora.safetensors",
+      "size": 1189176800,
+      "kind": "recommended",
+      "note": "without it every page uses the slow 50-step mode",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/lodestones/Kromoss"
+    },
+    {
+      "id": "sft_look",
+      "name": "SFT look LoRA (richer pages)",
+      "file": "moss_image_sft_look_lora.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA/resolve/main/moss_image_sft_look_lora.safetensors",
+      "size": 2221764612,
+      "kind": "recommended",
+      "note": "gives MOSS Base the look of the official SFT model: more detailed backgrounds and faces",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/ShootTheSound/Fizgig-MOSS-Image-SFT-Look-LoRA"
+    },
+    {
+      "id": "wd_tagger",
+      "name": "WD eva02 tagger (freeze the look of a scene)",
+      "file": "wd-eva02-large-tagger-v3.safetensors",
+      "dest": "wd_tagger",
+      "url": "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/main/model.safetensors",
+      "size": 1260796004,
+      "kind": "optional",
+      "note": "reads the clothes of a drawn page, so later pages of a scene draw the same pieces; runs on the CPU",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3"
+    },
+    {
+      "id": "wd_tagger_tags",
+      "name": "WD eva02 tagger tag list",
+      "file": "wd-eva02-large-tagger-v3_tags.csv",
+      "dest": "wd_tagger",
+      "url": "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3/resolve/main/selected_tags.csv",
+      "size": 308468,
+      "kind": "optional",
+      "note": "belongs to the WD eva02 tagger",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/SmilingWolf/wd-eva02-large-tagger-v3"
+    },
+    {
+      "id": "kromoss",
+      "name": "Kromoss (MOSS fine-tune, glossier / more 3D)",
+      "file": "kromoss_bf16.safetensors",
+      "note": "experimental: character LoRAs trained on MOSS Base can look off or overcooked on Kromoss; use Base for your own characters",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/lodestones/Kromoss/resolve/main/diffusion_models/kromoss_bf16.safetensors",
+      "size": 10164655808,
+      "kind": "optional",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/lodestones/Kromoss"
+    },
+    {
+      "id": "charref_v2",
+      "name": "CharRef v2 (reference picture)",
+      "file": "moss_image_charref_v2.safetensors",
+      "dest": "loras",
+      "url": "https://huggingface.co/7err4/MOSS-Image-CharRef/resolve/main/moss_image_charref_v2.safetensors",
+      "size": 148697656,
+      "kind": "optional",
+      "note": "draw the main character after a reference picture",
+      "license": "Apache-2.0",
+      "license_url": "https://huggingface.co/7err4/MOSS-Image-CharRef"
+    }
+  ],
+  "workflows": {
+    "page": {
+      "file": "workflows/page.json",
+      "defaults": {
+        "lora": "",
+        "lora_strength": 1.0,
+        "base_model": "",
+        "sft_look": "",
+        "quality": false,
+        "versions": 3,
+        "reference": "",
+        "reference_lora": "",
+        "reference_strength": 1.0
+      }
+    },
+    "freeze": {
+      "file": "workflows/freeze.json",
+      "defaults": {}
+    },
+    "layout": {
+      "file": "workflows/layout.json",
+      "defaults": {
+        "text_encoder": "qwen3.5_9b_int8_convrot.safetensors",
+        "vae": "flux2-vae.safetensors",
+        "turbo_lora": "kromoss_8steps_dmd_lora.safetensors",
+        "lora": "",
+        "lora_strength": 1.0,
+        "full": true
+      }
+    }
+  },
+  "requires": [
+    "family-moss"
+  ]
+}

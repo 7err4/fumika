@@ -1,0 +1,184 @@
+/* Fumika - manuscript board. Ink is the art; non-repro blue is every tool mark; red pencil only for errors. */
+@import "@fontsource/libre-franklin/400.css";
+@import "@fontsource/libre-franklin/500.css";
+@import "@fontsource/libre-franklin/600.css";
+@import "@fontsource/libre-franklin/700.css";
+
+:root {
+  --board: #f6f7f8;
+  --sheet: #ffffff;
+  --ink: #151515;
+  --ink-2: #3b3d40;      /* secondary text on board, 10.6:1 */
+  --ink-3: #5c6066;      /* quiet text, 6.1:1 */
+  --nr: #6fb3e8;         /* non-repro blue: lines and marks only (not text) */
+  --nr-text: #1f6aa8;    /* non-repro blue for labels, 5.6:1 on board */
+  --nr-tint: #c9dceb;
+  --nr-wash: #e8f1f8;
+  --pencil: #c7392c;     /* red pencil: errors, rejections (5.2:1) */
+  --pencil-wash: #fbe9e7;
+  --ok: #2f7d4f;
+  --rule: #d5dde4;
+  --ink-hover: #2a2b2d;
+  --lift: 0 6px 28px rgba(21, 21, 21, .12);
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231f6aa8' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  --radius: 5px;
+  --rail: 232px;
+  --inspector: 312px;
+  --font: "Libre Franklin", system-ui, sans-serif;
+  color-scheme: light;
+}
+/* CJK: Libre Franklin has no CJK glyphs - name the system fonts per language so Han characters get the regional forms */
+:root:lang(ja) { --font: "Libre Franklin", "Yu Gothic UI", "Meiryo UI", "Hiragino Sans", "Noto Sans JP", "Noto Sans CJK JP", system-ui, sans-serif; }
+:root:lang(ko) { --font: "Libre Franklin", "Malgun Gothic", "Apple SD Gothic Neo", "Noto Sans KR", "Noto Sans CJK KR", system-ui, sans-serif; }
+:root:lang(zh-Hans) { --font: "Libre Franklin", "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", "Noto Sans CJK SC", system-ui, sans-serif; }
+:root:lang(zh-Hant) { --font: "Libre Franklin", "Microsoft JhengHei UI", "PingFang TC", "Noto Sans TC", "Noto Sans CJK TC", system-ui, sans-serif; }
+
+/* dark: the same board after hours - a lightbox desk, blue pencil stays blue, red pencil stays red */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --board: #121416;
+  --sheet: #1b1e21;
+  --ink: #ecedee;
+  --ink-2: #c3c7cc;      /* 11:1 on board */
+  --ink-3: #969ca4;      /* 6.6:1 */
+  --ink-hover: #d4d6d9;
+  --nr: #4f8fc4;
+  --nr-text: #8ec3ee;    /* 9.4:1 on board */
+  --nr-tint: #25405a;
+  --nr-wash: #182736;
+  --pencil: #f07a6c;     /* 6.4:1 */
+  --pencil-wash: #3a1f1c;
+  --ok: #5cc08a;
+  --rule: #2c3238;
+  --lift: 0 6px 28px rgba(0, 0, 0, .55);
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ec3ee' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  color-scheme: dark;
+} }
+:root[data-theme="dark"] {
+  --board: #121416;
+  --sheet: #1b1e21;
+  --ink: #ecedee;
+  --ink-2: #c3c7cc;      /* 11:1 on board */
+  --ink-3: #969ca4;      /* 6.6:1 */
+  --ink-hover: #d4d6d9;
+  --nr: #4f8fc4;
+  --nr-text: #8ec3ee;    /* 9.4:1 on board */
+  --nr-tint: #25405a;
+  --nr-wash: #182736;
+  --pencil: #f07a6c;     /* 6.4:1 */
+  --pencil-wash: #3a1f1c;
+  --ok: #5cc08a;
+  --rule: #2c3238;
+  --lift: 0 6px 28px rgba(0, 0, 0, .55);
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238ec3ee' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+/* "Terra" colour scheme, after the 7err4 avatar girl Terra: black hoodie, red eyes, pink ears, navy hair.
+   Combines with light / dark; red pencil (errors) becomes amber because red is the accent here. */
+@media (prefers-color-scheme: light) { :root[data-palette="terra"]:not([data-theme="dark"]) {
+  --board: #f6f5f7;
+  --sheet: #ffffff;
+  --ink: #17151a;
+  --ink-2: #3d3a43;      /* 10.3:1 on board */
+  --ink-3: #5f5b66;      /* 6.1:1 */
+  --ink-hover: #2d2a31;
+  --nr: #e0505f;         /* her red eyes: lines and marks only (not text) */
+  --nr-text: #b0202f;    /* 6.2:1 on board */
+  --nr-tint: #f6cdd6;    /* her pink inner ears */
+  --nr-wash: #fcedf1;
+  --pencil: #b45309;     /* errors turn amber - red is taken by the accent (4.6:1) */
+  --pencil-wash: #fdf0e1;
+  --rule: #e3dde4;
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0202f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+} }
+:root[data-palette="terra"][data-theme="light"] {
+  --board: #f6f5f7;
+  --sheet: #ffffff;
+  --ink: #17151a;
+  --ink-2: #3d3a43;      /* 10.3:1 on board */
+  --ink-3: #5f5b66;      /* 6.1:1 */
+  --ink-hover: #2d2a31;
+  --nr: #e0505f;         /* her red eyes: lines and marks only (not text) */
+  --nr-text: #b0202f;    /* 6.2:1 on board */
+  --nr-tint: #f6cdd6;    /* her pink inner ears */
+  --nr-wash: #fcedf1;
+  --pencil: #b45309;     /* errors turn amber - red is taken by the accent (4.6:1) */
+  --pencil-wash: #fdf0e1;
+  --rule: #e3dde4;
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b0202f' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) { :root[data-palette="terra"]:not([data-theme="light"]) {
+  --board: #121116;      /* the black hoodie */
+  --sheet: #1b1a21;
+  --ink: #eeedf1;
+  --ink-2: #c8c5cf;      /* 11:1 on board */
+  --ink-3: #9d99a7;      /* 6.8:1 */
+  --ink-hover: #d6d4db;
+  --nr: #c8384a;
+  --nr-text: #ff8593;    /* 8.1:1 on board */
+  --nr-tint: #4c2132;
+  --nr-wash: #2a1620;
+  --pencil: #f0a35c;     /* amber, 9.0:1 */
+  --pencil-wash: #3a2a18;
+  --rule: #2c2a39;       /* a trace of her navy hair */
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ff8593' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+} }
+:root[data-palette="terra"][data-theme="dark"] {
+  --board: #121116;      /* the black hoodie */
+  --sheet: #1b1a21;
+  --ink: #eeedf1;
+  --ink-2: #c8c5cf;      /* 11:1 on board */
+  --ink-3: #9d99a7;      /* 6.8:1 */
+  --ink-hover: #d6d4db;
+  --nr: #c8384a;
+  --nr-text: #ff8593;    /* 8.1:1 on board */
+  --nr-tint: #4c2132;
+  --nr-wash: #2a1620;
+  --pencil: #f0a35c;     /* amber, 9.0:1 */
+  --pencil-wash: #3a2a18;
+  --rule: #2c2a39;       /* a trace of her navy hair */
+  --chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ff8593' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+@media (max-width: 1180px) { :root { --rail: 196px; } }
+
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+body {
+  background: var(--board);
+  color: var(--ink);
+  font: 14px/1.45 var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--nr-tint); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--nr); outline-offset: 2px; }
+* { scrollbar-width: thin; scrollbar-color: var(--nr-tint) transparent; }
+input, textarea, select, button { font: inherit; color: inherit; }
+textarea, input[type="text"], input:not([type]), select {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  caret-color: var(--nr-text);
+}
+textarea:focus, input:focus, select:focus { border-color: var(--nr); outline: none; box-shadow: 0 0 0 3px var(--nr-wash); }
+textarea { resize: vertical; line-height: 1.5; }
+input[type="checkbox"] { accent-color: var(--ink); width: 15px; height: 15px; }
+select { appearance: none; padding-right: 30px; cursor: pointer;
+  background: var(--sheet) var(--chev) no-repeat right 10px center; }
+::placeholder { color: var(--ink-3); }
+h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 15px; border-radius: var(--radius);
+  border: 1px solid var(--ink); background: var(--sheet);
+  font-weight: 600; font-size: 13px; cursor: pointer;
+  transition: background .15s ease-out, border-color .15s ease-out;
+}
+.btn:hover { background: var(--nr-wash); }
+.btn.primary { background: var(--ink); color: var(--sheet); }
+.btn.primary:hover { background: var(--ink-hover); }
+.btn.quiet { border-color: var(--rule); color: var(--ink-2); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.label { font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--nr-text); }
+.muted { color: var(--ink-3); }

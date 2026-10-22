@@ -1,0 +1,136 @@
+{
+  "id": "family-anima38",
+  "name": "Anima 3.8B v1.1 (Qwen3.5)",
+  "version": "1.0.0",
+  "author": "7err4",
+  "description": "Anima 3.8B v1.1 (lylogummy): the 52-block Anima 3.8B plus the Semantic Connector v2 and a Qwen3.5 4B text encoder - better prompt following, more VRAM. Brings the comfyui-anima-3-8B nodes (GumGum10, MIT). Experimental; Anima 3.8B v1 without the Qwen3.5 encoder is part of the Anima plugin.",
+  "kinds": [
+    "family"
+  ],
+  "family": "Anima 3.8B v1.1",
+  "content": "sfw",
+  "license": "GPL-3.0",
+  "ui": [],
+  "nodes": [
+    "nodes/comfyui-anima-3-8B"
+  ],
+  "python": [
+    "transformers>=4.51.0"
+  ],
+  "models": [
+    {
+      "id": "anima38_pro52",
+      "name": "Anima 3.8B v1.1 (lylogummy)",
+      "file": "Anima-3.8B-v1.1.safetensors",
+      "dest": "diffusion_models",
+      "url": "https://huggingface.co/lylogummy/Anima-3.8B/resolve/main/difussion_models/Anima-3.8B-v1.1.safetensors",
+      "size": 8809227318,
+      "kind": "required",
+      "note": "52-block DiT + Semantic Connector v2 in one file",
+      "license": "CircleStone Labs Non-Commercial License v1.2 (derivative of Anima)",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "qwen35_4b_te",
+      "name": "Qwen3.5 4B text encoder",
+      "file": "qwen35_4b.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/lylogummy/Anima-3.8B/resolve/main/text_encoders/qwen35_4b.safetensors",
+      "size": 4779016600,
+      "kind": "required",
+      "license": "Apache-2.0 (Qwen3.5)",
+      "license_url": "https://www.apache.org/licenses/LICENSE-2.0"
+    },
+    {
+      "id": "anima_qwen3_te",
+      "name": "Qwen3 0.6B text encoder",
+      "file": "qwen_3_06b_base.safetensors",
+      "dest": "text_encoders",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "size": 1192135096,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    },
+    {
+      "id": "anima_vae",
+      "name": "Qwen-Image VAE",
+      "file": "qwen_image_vae.safetensors",
+      "dest": "vae",
+      "url": "https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/vae/qwen_image_vae.safetensors",
+      "size": 253806246,
+      "kind": "required",
+      "license": "CircleStone Labs Non-Commercial License v1.2",
+      "license_url": "https://huggingface.co/circlestone-labs/Anima/blob/main/LICENSE.md",
+      "license_noncommercial": true
+    }
+  ],
+  "family_def": {
+    "id": "anima38",
+    "name": "Anima 3.8B v1.1",
+    "loader": "anima38",
+    "te": "qwen_3_06b_base.safetensors",
+    "te2": "qwen35_4b.safetensors",
+    "vae": "qwen_image_vae.safetensors",
+    "clip": "stable_diffusion",
+    "latent": "EmptyLatentImage",
+    "bases": [
+      "anima38_pro52"
+    ],
+    "ckptKind": "diffusion_models",
+    "recipe": {
+      "steps": 32,
+      "cfg": 5.0,
+      "sampler": "res_multistep",
+      "scheduler": "beta",
+      "slg": ""
+    },
+    "turbo": false,
+    "sft": false,
+    "slg": false,
+    "clipSkip": 0,
+    "clipLoras": false,
+    "match": "anima-3.8b-v1.1|anima-3.8b-v2|anima38b-v|anima-3-8b",
+    "detect": ["anima_v2_connector."],
+    "order": 2.5,
+    "inpaintSide": 1024,
+    "sizes": [
+      [
+        "square",
+        1024,
+        1024
+      ],
+      [
+        "portrait",
+        832,
+        1216
+      ],
+      [
+        "landscape",
+        1216,
+        832
+      ],
+      [
+        "page",
+        896,
+        1344
+      ],
+      [
+        "wide",
+        1344,
+        768
+      ]
+    ],
+    "presets": [
+      {
+        "id": "anima38-quality",
+        "name": "Anima 3.8B: tags + description",
+        "positive": "masterpiece, best quality. Description: ",
+        "negative": "worst quality, low quality, blurry, jpeg artifacts, watermark, text"
+      }
+    ]
+  },
+  "workflows": {}
+}

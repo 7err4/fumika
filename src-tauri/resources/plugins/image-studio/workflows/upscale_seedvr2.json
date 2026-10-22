@@ -1,0 +1,12 @@
+{
+ "10": {"class_type": "FumikaLoadSource", "inputs": {"source": "{{source}}", "width": 0, "height": 0, "scale": 1.0, "max_side": 4096, "target_scale": "{{scale}}"}},
+ "30": {"class_type": "SeedVR2LoadDiTModel", "inputs": {"model": "{{dit}}", "device": "cuda:0", "blocks_to_swap": 0, "swap_io_components": false,
+        "offload_device": "cpu", "cache_model": false, "attention_mode": "sdpa"}},
+ "31": {"class_type": "SeedVR2LoadVAEModel", "inputs": {"model": "ema_vae_fp16.safetensors", "device": "cuda:0", "encode_tiled": true, "encode_tile_size": 1024,
+        "encode_tile_overlap": 128, "decode_tiled": true, "decode_tile_size": 1024, "decode_tile_overlap": 128, "tile_debug": "false",
+        "offload_device": "cpu", "cache_model": false}},
+ "32": {"class_type": "SeedVR2VideoUpscaler", "inputs": {"image": ["10", 0], "dit": ["30", 0], "vae": ["31", 0], "seed": "{{seed}}",
+        "resolution": ["10", 3], "max_resolution": "{{max_resolution}}", "batch_size": 1, "uniform_batch_size": false, "temporal_overlap": 0,
+        "prepend_frames": 0, "color_correction": "lab", "input_noise_scale": 0.0, "latent_noise_scale": 0.0, "offload_device": "cpu", "enable_debug": false}},
+ "13": {"class_type": "SaveImage", "inputs": {"images": ["32", 0], "filename_prefix": "{{prefix}}"}}
+}
