@@ -30,7 +30,7 @@ an A1111-style `parameters` text with prompt, settings and AutoV2 model / LoRA h
 is also marked as AI-generated (IPTC digital source type in XMP, EU AI Act Art. 50). Setup -> Export can leave the prompt data
 out of exported pictures and CBZ files; the AI marking always stays.
 
-Status: first release (0.1.0), in active development.
+Status: 0.1.1, in active development.
 
 ## Install
 

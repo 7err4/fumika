@@ -1,6 +1,6 @@
 [package]
 name = "fumika"
-version = "0.1.0"
+version = "0.1.1"
 description = "Fumika - local image, comic and LoRA studio with plugins, ComfyUI included"
 authors = ["7err4"]
 edition = "2024"

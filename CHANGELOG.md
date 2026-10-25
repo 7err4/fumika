@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 - 2026-10-25
+
+- **Linux AppImage**: the engine and the plugin installs failed with `No module named 'encodings'` – the AppImage passed its
+  own `PYTHONHOME` / `PYTHONPATH` on to the engine's Python. Fumika now clears both before starting any Python (#1).
+
 ## 0.1.0 - 2026-10-23
 
 First version.

@@ -12,7 +12,7 @@
   const needed = $derived(app.catalog.filter((c) => (c.kind === "required" || c.kind === "recommended") && (!c.group || c.id === app.cfg?.base_model)));
   const THEMES: Theme[] = ["system", "light", "dark"];
   const PALETTES: Palette[] = ["fumika", "terra"];
-  const APP_VERSION = "0.1.0";   // same as package.json / Cargo.toml / splash
+  const APP_VERSION = "0.1.1";   // same as package.json / Cargo.toml / splash
 
   // plugin choice: edited locally, saved with one button (switching on downloads nothing yet - the model list just grows)
   let sel = $state<string[]>([]);

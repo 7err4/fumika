@@ -616,6 +616,14 @@ pub(crate) fn pct_decode(s: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    // AppImage: its AppRun sets PYTHONHOME / PYTHONPATH to the image's own usr/, every Python we start (uv, the engine venv)
+    // then looks for its stdlib there and dies with "No module named 'encodings'" (GitHub issue #1, 24 Oct). A user's own
+    // PYTHONHOME would break the .deb / Windows engine the same way. Fumika itself needs neither, so they go before any thread
+    // or child process exists
+    unsafe {
+        std::env::remove_var("PYTHONHOME");
+        std::env::remove_var("PYTHONPATH");
+    }
     tauri::Builder::default()
         // first plugin: a second start (start menu while Fumika sits in the tray) only brings the running window back
         .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| shell::show_main(app)))
