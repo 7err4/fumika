@@ -159,7 +159,7 @@ const d: Partial<Record<Key, Entry>> = {
   "theme.system": "시스템", "theme.light": "라이트", "theme.dark": "다크",
   "setup.palette": "색 구성", "palette.fumika": "Fumika", "palette.terra": "Terra",
   "setup.dir": "설치 폴더", "setup.dirPh": "예: D:\\Fumika", "setup.pick": "선택 …",
-  "setup.report": "GPU: {gpu} · 여유 공간: {free} GB · {verdict}", "setup.noGpu": "NVIDIA GPU 없음",
+  "setup.report": "GPU: {gpu} · 여유 공간: {free} GB · {verdict}", "setup.noGpu": "NVIDIA / AMD ROCm GPU 없음",
   "setup.models": "모델", "setup.file": "파일", "setup.size": "크기", "setup.state": "상태",
   "setup.noModels": "먼저 설치 폴더를 선택하면 다운로드할 모델이 여기에 표시됩니다.",
   "setup.installed": "설치됨", "setup.partial": "일부 {size}", "setup.missing": "없음", "setup.dl": "다운로드",

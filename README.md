@@ -4,7 +4,7 @@
 
 *Fumika, the app's mascot - a manga artist racing her next deadline. Artwork made with MOSS-Image and the app's own pipeline.*
 
-A local studio for comics, images and LoRA training on your own PC (Windows or Linux, NVIDIA GPU; no macOS). Fumika brings its own image engine
+A local studio for comics, images and LoRA training on your own PC (Windows with NVIDIA or Linux with NVIDIA / AMD ROCm; no macOS). Fumika brings its own image engine
 (a bundled ComfyUI with its own Python, nothing else on the PC is touched), a persistent render queue, downloads, projects, a
 reader and a local MCP server for AI agents. Everything model-specific comes as a **plugin** - you pick the ones you want at
 first start and only their models are downloaded.
@@ -37,9 +37,27 @@ Status: 0.1.1, in active development.
 - **Windows**: `Fumika_<version>_x64-setup.exe` installs for the current user (no admin rights). The installer is not signed,
   so SmartScreen may warn: "More info" -> "Run anyway". The engine is the official ComfyUI Windows portable build.
 - **Linux** (x86-64): `Fumika_<version>_amd64.AppImage` (make it executable and run it) or `Fumika_<version>_amd64.deb`. The
-  engine is ComfyUI from source with its own Python 3.13 and PyTorch (CUDA 13), set up by [uv](https://github.com/astral-sh/uv)
-  inside the install folder - the system Python is not touched. Needs the NVIDIA driver and `git` (the trainers clone their
+  engine is ComfyUI from source with its own Python 3.13 and PyTorch (CUDA 13 for NVIDIA, ROCm 6.4 / PyTorch 2.9.1 for AMD), set up by [uv](https://github.com/astral-sh/uv)
+  inside the install folder - the system Python is not touched. Needs the NVIDIA driver or a supported AMD amdgpu/ROCm installation, and `git` (the trainers clone their
   tools).
+
+### AMD ROCm on Linux
+
+Fumika detects AMD graphics through Linux DRM and installs matched torch, torchvision and torchaudio wheels from the
+[official PyTorch ROCm 6.4 index](https://download.pytorch.org/whl/rocm6.4/). NVIDIA takes precedence on mixed systems.
+No Docker or system Python changes are required. Existing NVIDIA and no-GPU installation paths are unchanged.
+
+Install a compatible AMD driver/ROCm stack first; consult AMD's [support matrix](https://rocm.docs.amd.com/).
+Your user needs access to `/dev/kfd` and `/dev/dri/render*` (usually the render and video groups; log in again after changing
+groups). Check `rocminfo` before setup. Containers/sandboxes also need these devices exposed. Fumika checks KFD access and
+tests HIP, GPU availability and a tensor allocation before marking installation complete and before launching on AMD.
+Installation output is in `engine_install_log.txt`; ComfyUI output is in `comfyui_log.txt` in your selected install folder.
+An existing CUDA engine moved to an AMD machine must be reinstalled in a fresh install folder.
+
+ROCm uses PyTorch's `torch.cuda` API; ComfyUI needs no extra launch flag. GPU detection alone does not imply that a GPU is
+supported by the official wheels. CUDA-specific third-party nodes, quantization and trainers may have additional restrictions;
+ROCm engine support does not guarantee every plugin works.
+
 
 ## License
 

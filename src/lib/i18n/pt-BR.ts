@@ -159,7 +159,7 @@ const d: Partial<Record<Key, Entry>> = {
   "theme.system": "Sistema", "theme.light": "Claro", "theme.dark": "Escuro",
   "setup.palette": "Esquema de cores", "palette.fumika": "Fumika", "palette.terra": "Terra",
   "setup.dir": "Pasta de instalação", "setup.dirPh": "ex.: D:\\Fumika", "setup.pick": "Escolher …",
-  "setup.report": "GPU: {gpu} · livre: {free} GB · {verdict}", "setup.noGpu": "nenhuma GPU NVIDIA",
+  "setup.report": "GPU: {gpu} · livre: {free} GB · {verdict}", "setup.noGpu": "nenhuma GPU NVIDIA / AMD ROCm",
   "setup.models": "Modelos", "setup.file": "Arquivo", "setup.size": "Tamanho", "setup.state": "Status",
   "setup.noModels": "Escolha primeiro uma pasta de instalação; depois os modelos a baixar aparecem aqui.",
   "setup.installed": "instalado", "setup.partial": "parcial {size}", "setup.missing": "faltando", "setup.dl": "Baixar",
