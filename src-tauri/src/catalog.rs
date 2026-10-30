@@ -42,7 +42,18 @@ pub const ENGINE: &str = if cfg!(windows) { "comfy_portable" } else { "comfy_lin
 
 fn core() -> Vec<Item> {
     let all: Vec<Item> = serde_json::from_str(CORE).expect("models.json is valid");
-    all.into_iter().filter(|i| i.os.is_empty() || i.os == std::env::consts::OS).collect()
+    let mut items: Vec<Item> = all.into_iter().filter(|i| i.os.is_empty() || i.os == std::env::consts::OS).collect();
+    if let Some(engine) = items.iter_mut().find(|i| i.id == "comfy_linux") {
+        describe_linux_engine(engine, crate::system::use_rocm());
+    }
+    items
+}
+
+/// Use the installer's backend decision so the setup label cannot independently select a different backend.
+fn describe_linux_engine(engine: &mut Item, rocm: bool) {
+    let backend = if rocm { "AMD ROCm" } else { "NVIDIA CUDA" };
+    engine.name = format!("ComfyUI 0.42 for Linux ({backend})");
+    engine.note = format!("the image engine; Python 3.13 and PyTorch for {backend} are installed into its own folder - does not touch other installs");
 }
 
 fn merge<'a>(plugins: impl Iterator<Item = &'a Plugin>) -> Vec<Item> {
@@ -75,6 +86,22 @@ pub fn get(reg: &Registry, id: &str) -> Option<Item> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn linux_setup_describes_the_selected_backend_without_changing_downloads() {
+        let all: Vec<Item> = serde_json::from_str(CORE).unwrap();
+        let original = all.into_iter().find(|i| i.id == "comfy_linux").unwrap();
+        for (rocm, backend) in [(true, "AMD ROCm"), (false, "NVIDIA CUDA")] {
+            let mut engine = original.clone();
+            describe_linux_engine(&mut engine, rocm);
+            assert!(engine.name.contains(backend));
+            assert!(engine.note.contains(backend));
+            assert_eq!(engine.id, original.id);
+            assert_eq!(engine.file, original.file);
+            assert_eq!(engine.url, original.url);
+            assert_eq!(engine.os, original.os);
+        }
+    }
 
     #[test]
     fn shared_models_are_listed_once() {

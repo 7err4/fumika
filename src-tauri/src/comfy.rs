@@ -52,6 +52,28 @@ const LINUX_PYTHON: &str = "3.13";
 #[cfg(unix)]
 const LINUX_TORCH: [&str; 3] = ["torch==2.14.0", "torchvision==0.29.0", "torchaudio==2.11.0"];
 
+// Official matched ROCm release; independent of the CUDA portable-build versions.
+// https://download.pytorch.org/whl/rocm6.4/
+#[cfg(unix)]
+const ROCM_TORCH: [&str; 3] = ["torch==2.9.1+rocm6.4", "torchvision==0.24.1+rocm6.4", "torchaudio==2.9.1+rocm6.4"];
+
+#[cfg(unix)]
+fn torch_packages(rocm: bool) -> (&'static [&'static str], &'static str) {
+    if rocm { (&ROCM_TORCH, "https://download.pytorch.org/whl/rocm6.4") }
+    else { (&LINUX_TORCH, "https://download.pytorch.org/whl/cu130") }
+}
+
+#[cfg(unix)]
+fn check_rocm(py: &Path) -> anyhow::Result<()> {
+    let out = Command::new(py).args(["-s", "-c",
+        "import torch; print('PyTorch', torch.__version__, 'HIP', torch.version.hip, 'GPU available', torch.cuda.is_available()); assert torch.version.hip and torch.cuda.is_available(); x = torch.ones(1, device='cuda'); torch.cuda.synchronize(); print(torch.cuda.get_device_name(0))"]).output()?;
+    if !out.status.success() {
+        anyhow::bail!("{}\n{}\n{}", crate::system::ROCM_HELP,
+            String::from_utf8_lossy(&out.stdout), String::from_utf8_lossy(&out.stderr));
+    }
+    Ok(())
+}
+
 /// Linux engine: ComfyUI source tarball -> <engine>/ComfyUI, uv -> <engine>/bin/uv, then uv puts its own Python (kept in
 /// <engine>/python) and a venv with PyTorch + ComfyUI's requirements into <engine>/venv. Nothing outside install_dir is
 /// touched; the wheel cache sits in downloads/uv-cache. Output goes to <install_dir>/engine_install_log.txt.
@@ -60,6 +82,11 @@ pub fn install_linux(c: &Config, source: &Path, uv_archive: &Path) -> anyhow::Re
     use std::io::Write;
     use std::os::unix::fs::PermissionsExt;
     let dir = c.comfy_dir().ok_or_else(|| anyhow::anyhow!("no install folder set"))?;
+    let rocm = crate::system::use_rocm();
+    if let Some(problem) = crate::system::rocm_diagnostic() { anyhow::bail!("{problem}"); }
+    let (packages, index) = torch_packages(rocm);
+    // A failed reinstall must never leave a success marker behind.
+    let _ = std::fs::remove_file(dir.join(LINUX_DONE));
     let comfy = dir.join("ComfyUI");
     let bin = dir.join("bin");
     std::fs::create_dir_all(&bin)?;
@@ -105,12 +132,18 @@ pub fn install_linux(c: &Config, source: &Path, uv_archive: &Path) -> anyhow::Re
         steps.push(["venv", "--seed", "--python", LINUX_PYTHON].iter().map(|s| s.to_string()).chain([venv.to_string_lossy().to_string()]).collect());
     }
     let pip = |extra: &[&str]| -> Vec<String> { ["pip", "install", "--python", &py].iter().chain(extra).map(|s| s.to_string()).collect() };
-    let mut torch: Vec<&str> = LINUX_TORCH.to_vec();
-    torch.extend(["--index-url", "https://download.pytorch.org/whl/cu130"]);
+    let mut torch: Vec<&str> = packages.to_vec();
+    torch.extend(["--index-url", index]);
     steps.push(pip(&torch));
     // the pinned torch stays: the requirements list "torch" without a version. The extras are what the portable build ships
     // beyond requirements.txt (SeedVR2 imports cv2, found 22 Oct)
-    steps.push(pip(&["-r", &reqs, "opencv-python-headless==5.0.0.93", "pygit2==1.20.1", "httpx==0.28.1"]));
+    let mut requirements = pip(&["-r", &reqs, "opencv-python-headless==5.0.0.93", "pygit2==1.20.1", "httpx==0.28.1"]);
+    if rocm {
+        let constraints = dir.join("rocm-constraints.txt");
+        std::fs::write(&constraints, packages.join("\n"))?;
+        requirements.extend(["--constraint".to_string(), constraints.to_string_lossy().into_owned()]);
+    }
+    steps.push(requirements);
     for s in steps {
         writeln!(log, "$ uv {}", s.join(" "))?;
         let out = Command::new(&uv).args(&s).current_dir(&dir)
@@ -126,7 +159,8 @@ pub fn install_linux(c: &Config, source: &Path, uv_archive: &Path) -> anyhow::Re
             anyhow::bail!("setting up the engine's Python failed ({}): {}", log_p.display(), tail.into_iter().rev().collect::<Vec<_>>().join(" / "));
         }
     }
-    std::fs::write(dir.join(LINUX_DONE), LINUX_TORCH.join(" "))?;
+    if rocm { check_rocm(&python(&dir))?; }
+    std::fs::write(dir.join(LINUX_DONE), format!("{}\n{}", index, packages.join(" ")))?;
     Ok(())
 }
 
@@ -297,6 +331,11 @@ pub fn start(c: &Config, srv: &Server) -> anyhow::Result<()> {
         }
     }
     let dir = c.comfy_dir().ok_or_else(|| anyhow::anyhow!("no install folder set"))?;
+    #[cfg(unix)]
+    if crate::system::use_rocm() {
+        if let Some(problem) = crate::system::rocm_diagnostic() { anyhow::bail!("{problem}"); }
+        check_rocm(&python(&dir))?;
+    }
     let log = std::fs::File::create(log_path(c).unwrap())?;
     let mut cmd = Command::new(python(&dir));
     cmd.current_dir(&dir).args(["-s", "ComfyUI/main.py", "--listen", "127.0.0.1"]);
@@ -490,5 +529,18 @@ mod tests {
             assert!(super::request(1, "GET", p, None).await.unwrap_err().to_string().starts_with("path not allowed"), "{p}");
         }
         assert!(super::request(1, "DELETE", "/queue", None).await.unwrap_err().to_string().starts_with("method not allowed"));
+    }
+}
+
+#[cfg(all(test, unix))]
+mod backend_tests {
+    #[test]
+    fn official_backend_packages_are_matched() {
+        let (amd, index) = super::torch_packages(true);
+        assert_eq!(index, "https://download.pytorch.org/whl/rocm6.4");
+        assert_eq!(amd, &["torch==2.9.1+rocm6.4", "torchvision==0.24.1+rocm6.4", "torchaudio==2.9.1+rocm6.4"]);
+        let (cuda, index) = super::torch_packages(false);
+        assert_eq!(cuda, &super::LINUX_TORCH);
+        assert_eq!(index, "https://download.pytorch.org/whl/cu130");
     }
 }

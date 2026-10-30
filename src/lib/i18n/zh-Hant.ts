@@ -159,7 +159,7 @@ const d: Partial<Record<Key, Entry>> = {
   "theme.system": "系統", "theme.light": "淺色", "theme.dark": "深色",
   "setup.palette": "配色", "palette.fumika": "Fumika", "palette.terra": "Terra",
   "setup.dir": "安裝資料夾", "setup.dirPh": "例如 D:\\Fumika", "setup.pick": "選擇 …",
-  "setup.report": "GPU：{gpu} · 可用：{free} GB · {verdict}", "setup.noGpu": "沒有 NVIDIA GPU",
+  "setup.report": "GPU：{gpu} · 可用：{free} GB · {verdict}", "setup.noGpu": "沒有 NVIDIA / AMD ROCm GPU",
   "setup.models": "模型", "setup.file": "檔案", "setup.size": "大小", "setup.state": "狀態",
   "setup.noModels": "請先選擇安裝資料夾，要下載的模型就會顯示在這裡。",
   "setup.installed": "已安裝", "setup.partial": "部分 {size}", "setup.missing": "缺少", "setup.dl": "下載",
